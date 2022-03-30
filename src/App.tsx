@@ -8,7 +8,8 @@ function App() {
     let task_1: TaskType [] = [
         {id: 1, title: "HTML", isDone: true},
         {id: 2, title: "CSS", isDone: true},
-        {id: 3, title: "JS", isDone: false},
+        {id: 3, title: "JS", isDone: true},
+        {id: 4, title: "TS", isDone: false},
     ]
     let task_2 = [
         {id: 1, title: "React", isDone: false},
