@@ -1,7 +1,7 @@
 import React from "react";
 import {FilterType} from '../App'
 
-type ToDoListPropsType = {
+type ToDoListType = {
     title: string
     tasks: Array<TaskType>
     removeTask: (id: number) => void
@@ -14,7 +14,7 @@ export type TaskType = {
     isDone: boolean
 }
 
-export function ToDoList(props: ToDoListPropsType) {
+export function ToDoList(props: ToDoListType) {
     return (
         <div>
             <h3>{props.title}</h3>
