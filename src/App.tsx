@@ -8,17 +8,28 @@ function App() {
     let toDoListTitle = '1-ый список'
 
     let [tasks, setTasks] = useState<TaskType[]>([
-        {id: 1, title: "HTML", isDone: true},
-        {id: 2, title: "CSS", isDone: true},
-        {id: 3, title: "JS", isDone: true},
-        {id: 4, title: "TS", isDone: false},
-        {id: 5, title: "React", isDone: false},
-        {id: 6, title: "Python", isDone: true},
-        {id: 7, title: "Django", isDone: true},
+        {id: 0, title: "HTML", isDone: true},
+        {id: 1, title: "CSS", isDone: true},
+        {id: 2, title: "JS", isDone: true},
+        {id: 3, title: "TS", isDone: false},
+        {id: 4, title: "React", isDone: false},
+        {id: 5, title: "Python", isDone: true},
+        {id: 6, title: "Django", isDone: true},
     ])
 
     function removeTask(id: number) {
         setTasks(tasks.filter(task => task.id !== id))
+    }
+
+    function addTask(title: string) {
+        let newTasks = [{
+            id: tasks.length,
+            title: title,
+            isDone: false
+            },
+            ...tasks
+        ]
+        setTasks(newTasks)
     }
 
     let filteredTasks = tasks
@@ -37,6 +48,7 @@ function App() {
                 tasks={filteredTasks}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
+                addTask={addTask}
             />
         </div>
     );
