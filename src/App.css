@@ -6,3 +6,23 @@
 .App > div {
   margin-right: 50px;
 }
+
+li {
+  list-style: none;
+}
+
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  color: red;
+}
+
+.active-filter {
+  background-color: aqua;
+}
+
+.is-done {
+  opacity: .5;
+}

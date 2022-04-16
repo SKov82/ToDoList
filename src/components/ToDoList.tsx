@@ -4,46 +4,61 @@ import {FilterType} from '../App'
 type ToDoListType = {
     title: string
     tasks: Array<TaskType>
-    removeTask: (id: number) => void
+    removeTask: (id: string) => void
     changeFilter: (filter: FilterType) => void
     addTask: (title: string) => void
+    changeStatus: (id: string) => void
+    filter: FilterType
 }
 
 export type TaskType = {
-    id: number
+    id: string
     title: string
     isDone: boolean
 }
 
 export function ToDoList(props: ToDoListType) {
-    const [taskTitle, setTaskTitle] = useState('')
+    const [taskTitle, setTaskTitle] = useState<string>('')
+    const [error, setError] = useState<string>('')
 
     return (
         <div>
             <h3>{props.title}</h3>
             <div>
                 <input value={taskTitle}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => {setTaskTitle(event.currentTarget.value)}}
+                    className={error ? 'error' : ''}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                        setTaskTitle(event.currentTarget.value)
+                        setError('')
+                    }}
                     onKeyPress={(event: KeyboardEvent<HTMLInputElement>) => {
-                        if (event.key === 'Enter') {
-                            props.addTask(taskTitle)
+                        if (event.key === 'Enter' && taskTitle.trim()) {
+                            props.addTask(taskTitle.trim())
                             setTaskTitle('')
+                        } else {
+                            setError('Field is required')
                         }
                     }}/>
                 <button onClick={() => {
-                    if (taskTitle) {
-                        props.addTask(taskTitle)
+                    if (taskTitle.trim()) {
+                        props.addTask(taskTitle.trim())
                         setTaskTitle('')
+                    } else {
+                        setError('Field is required')
                     }
                 }}>
                     +
                 </button>
+                {error && <div className={'error-message'}>{error}</div>}
             </div>
             <ul>
                 {props.tasks.map(el => {
                     return (
-                        <li key={el.id}>
-                            <input type="checkbox" defaultChecked={el.isDone}/>
+                        <li key={el.id} className={el.isDone ? 'is-done' : ''}>
+                            <input type="checkbox"
+                                   checked={el.isDone}
+                                   onChange={() => props.changeStatus(el.id)}
+                            />
                             <span>{el.title}</span>
                             <button onClick={() => props.removeTask(el.id)}> Удалить</button>
                         </li>
@@ -51,9 +66,21 @@ export function ToDoList(props: ToDoListType) {
                 })}
             </ul>
             <div>
-                <button onClick={() => props.changeFilter('all')}>Все</button>
-                <button onClick={() => props.changeFilter('active')}>Активные</button>
-                <button onClick={() => props.changeFilter('done')}>Завершенные</button>
+                <button onClick={() => props.changeFilter('all')}
+                        className={props.filter === 'all' ? 'active-filter' : ''}
+                >
+                    Все
+                </button>
+                <button onClick={() => props.changeFilter('active')}
+                        className={props.filter === 'active' ? 'active-filter' : ''}
+                >
+                    Активные
+                </button>
+                <button onClick={() => props.changeFilter('done')}
+                        className={props.filter === 'done' ? 'active-filter' : ''}
+                >
+                    Завершенные
+                </button>
             </div>
         </div>
     );
