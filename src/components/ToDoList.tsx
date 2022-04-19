@@ -33,7 +33,7 @@ export function ToDoList(props: ToDoListType) {
                     }}
                     onKeyPress={(event: KeyboardEvent<HTMLInputElement>) => {
                         if (event.key === 'Enter' && taskTitle.trim()) {
-                            props.addTask(taskTitle.trim())
+                            props.addTask(taskTitle.trim(), props.id)
                             setTaskTitle('')
                         } else {
                             setError('Field is required')
@@ -41,7 +41,7 @@ export function ToDoList(props: ToDoListType) {
                     }}/>
                 <button onClick={() => {
                     if (taskTitle.trim()) {
-                        props.addTask(taskTitle.trim())
+                        props.addTask(taskTitle.trim(), props.id)
                         setTaskTitle('')
                     } else {
                         setError('Field is required')
@@ -57,10 +57,10 @@ export function ToDoList(props: ToDoListType) {
                         <li key={el.id} className={el.isDone ? 'is-done' : ''}>
                             <input type="checkbox"
                                    checked={el.isDone}
-                                   onChange={() => props.changeStatus(el.id)}
+                                   onChange={() => props.changeStatus(el.id, props.id)}
                             />
                             <span>{el.title}</span>
-                            <button onClick={() => props.removeTask(el.id)}> Удалить</button>
+                            <button onClick={() => props.removeTask(el.id, props.id)}> Удалить</button>
                         </li>
                     )
                 })}

@@ -6,29 +6,20 @@ import {v1} from 'uuid';
 export type FilterType = 'all' | 'active' | 'done'
 
 function App() {
-    let [tasks, setTasks] = useState<TaskType[]>([
-        {id: v1(), title: "HTML", isDone: true},
-        {id: v1(), title: "CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "TS", isDone: false},
-        {id: v1(), title: "React", isDone: false},
-        {id: v1(), title: "Python", isDone: true},
-        {id: v1(), title: "Django", isDone: true},
-    ])
-
-    function removeTask(id: string) {
-        setTasks(tasks.filter(task => task.id !== id))
+    function removeTask(id: string, toDoListId: string) {
+        tasks[toDoListId] = tasks[toDoListId].filter(task => task.id !== id)
+        setTasks({...tasks})
     }
 
-    function addTask(title: string) {
-        let newTasks = [{
+    function addTask(title: string, toDoListId: string) {
+        tasks[toDoListId] = [{
             id: v1(),
             title: title,
             isDone: false
             },
-            ...tasks
+            ...tasks[toDoListId]
         ]
-        setTasks(newTasks)
+        setTasks({...tasks})
     }
 
     let filteredTasks = tasks
@@ -40,11 +31,11 @@ function App() {
         setFilter(filter)
     }
 
-    function changeStatus(id: string) {
-        let task: TaskType | undefined = tasks.find(task => id === task.id)
+    function changeStatus(id: string, toDoListId: string) {
+        let task: TaskType | undefined = tasks[toDoListId].find(task => id === task.id)
         if (task) {
             task.isDone = !task.isDone
-            setTasks([...tasks])
+            setTasks({...tasks})
         }
     }
 
