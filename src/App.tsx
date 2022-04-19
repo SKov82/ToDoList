@@ -6,8 +6,6 @@ import {v1} from 'uuid';
 export type FilterType = 'all' | 'active' | 'done'
 
 function App() {
-    let toDoListTitle = '1-ый список'
-
     let [tasks, setTasks] = useState<TaskType[]>([
         {id: v1(), title: "HTML", isDone: true},
         {id: v1(), title: "CSS", isDone: true},
@@ -50,17 +48,27 @@ function App() {
         }
     }
 
+    let toDoLists = [
+        {id: v1(), title: 'What to learn', filter: 'all'},
+        {id: v1(), title: 'What to buy', filter: 'active'},
+        {id: v1(), title: 'Films to watch ', filter: 'done'},
+    ]
+
     return (
         <div className="App">
-            <ToDoList
-                title={toDoListTitle}
-                tasks={filteredTasks}
-                removeTask={removeTask}
-                changeFilter={changeFilter}
-                addTask={addTask}
-                changeStatus={changeStatus}
-                filter={filter}
-            />
+            {toDoLists.map(el => {
+                return <ToDoList
+                    key = {el.id}
+                    title={el.title}
+                    tasks={filteredTasks}
+                    removeTask={removeTask}
+                    changeFilter={changeFilter}
+                    addTask={addTask}
+                    changeStatus={changeStatus}
+                    filter={filter}
+                />
+                }
+            )}
         </div>
     );
 }
