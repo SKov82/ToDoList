@@ -9,6 +9,7 @@ type ToDoListType = {
     addTask: (title: string) => void
     changeStatus: (id: string) => void
     filter: FilterType
+    removeList: (toDoListId: string) => void
 }
 
 export type TaskType = {
@@ -23,7 +24,10 @@ export function ToDoList(props: ToDoListType) {
 
     return (
         <div>
-            <h3>{props.title}</h3>
+            <h3>
+                {props.title}
+                <button onClick={(event) => props.removeList(props.id)}>X</button>
+            </h3>
             <div>
                 <input value={taskTitle}
                     className={error ? 'error' : ''}
