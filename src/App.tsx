@@ -39,14 +39,14 @@ function App() {
         }
     }
 
-    let [id1, id2, id3] = [v1(), v1(), v1()]
     let [toDoLists, setToDoLists] = useState<Array<ToDoListType>>([
-        {id: id1, title: 'What to learn ', filter: 'all'},
-        {id: id2, title: 'What to buy ', filter: 'active'},
-        {id: id3, title: 'Films to watch ', filter: 'done'},
+        {id: v1(), title: 'What to learn ', filter: 'all'},
+        {id: v1(), title: 'What to buy ', filter: 'active'},
+        {id: v1(), title: 'Films to watch ', filter: 'done'},
     ])
+
     let [tasks, setTasks] = useState({
-        [id1]: [
+        [toDoLists[0]?.id]: [
             {id: v1(), title: "HTML/CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
             {id: v1(), title: "TS", isDone: false},
@@ -54,24 +54,23 @@ function App() {
             {id: v1(), title: "Python", isDone: true},
             {id: v1(), title: "Django", isDone: true},
         ],
-        [id2]: [
+        [toDoLists[1]?.id]: [
             {id: v1(), title: "Хлеб", isDone: true},
             {id: v1(), title: "Молоко", isDone: false},
             {id: v1(), title: "Сок", isDone: false},
             {id: v1(), title: "Витамины", isDone: true},
         ],
-        [id3]: [
+        [toDoLists[2]?.id]: [
             {id: v1(), title: "Дориан Грей", isDone: true},
             {id: v1(), title: "Зеленая миля", isDone: true},
             {id: v1(), title: "Знакомьтесь, Джо Блэк", isDone: true},
-        ],
+        ]
     })
 
     function removeList(toDoListId: string) {
         let filteredToDoList = toDoLists.filter(el => el.id !== toDoListId)
-        setToDoLists(filteredToDoList)
         delete tasks[toDoListId]
-        setTasks({...tasks})
+        setToDoLists(filteredToDoList)
     }
 
     return (
