@@ -1,5 +1,6 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React from 'react';
 import {FilterType} from '../App'
+import {AddItem} from './AddItem';
 
 type ToDoListType = {
     title: string
@@ -19,42 +20,15 @@ export type TaskType = {
 }
 
 export function ToDoList(props: ToDoListType) {
-    const [taskTitle, setTaskTitle] = useState<string>('')
-    const [error, setError] = useState<string>('')
-
     return (
         <div>
             <h3>
                 {props.title}
                 <button onClick={(event) => props.removeList(props.id)}>X</button>
             </h3>
-            <div>
-                <input value={taskTitle}
-                    className={error ? 'error' : ''}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                        setTaskTitle(event.currentTarget.value)
-                        setError('')
-                    }}
-                    onKeyPress={(event: KeyboardEvent<HTMLInputElement>) => {
-                        if (event.key === 'Enter' && taskTitle.trim()) {
-                            props.addTask(taskTitle.trim(), props.id)
-                            setTaskTitle('')
-                        } else {
-                            setError('Field is required')
-                        }
-                    }}/>
-                <button onClick={() => {
-                    if (taskTitle.trim()) {
-                        props.addTask(taskTitle.trim(), props.id)
-                        setTaskTitle('')
-                    } else {
-                        setError('Field is required')
-                    }
-                }}>
-                    +
-                </button>
-                {error && <div className={'error-message'}>{error}</div>}
-            </div>
+
+            <AddItem id={props.id} addTask={props.addTask} />
+
             <ul>
                 {props.tasks.map(el => {
                     return (
