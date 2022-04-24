@@ -13,14 +13,16 @@ function App() {
     }
 
     function addTask(title: string, toDoListId: string) {
-        tasks[toDoListId] = [{
-            id: v1(),
-            title: title,
-            isDone: false
+        if (title && toDoListId) {
+            tasks[toDoListId] = [{
+                id: v1(),
+                title: title,
+                isDone: false
             },
-            ...tasks[toDoListId]
-        ]
-        setTasks({...tasks})
+                ...tasks[toDoListId]
+            ]
+            setTasks({...tasks})
+        }
     }
 
     let filteredTasks = tasks
@@ -40,10 +42,16 @@ function App() {
         }
     }
 
+    function changeTaskTitle(toDoListId: string, id: string, newTitle: string) {
+        let task: TaskType | undefined = tasks[toDoListId].find(task => task.id === id)
+        if (task) task.title = newTitle
+        setTasks({...tasks})
+    }
+
     let [toDoLists, setToDoLists] = useState<Array<ToDoListType>>([
         {id: v1(), title: 'What to learn ', filter: 'all'},
-        {id: v1(), title: 'What to buy ', filter: 'all'},
-        {id: v1(), title: 'Films to watch ', filter: 'all'},
+        {id: v1(), title: 'What to buy ', filter: 'active'},
+        {id: v1(), title: 'Films to watch ', filter: 'done'},
     ])
 
     let [tasks, setTasks] = useState<TasksListType>({
@@ -75,14 +83,23 @@ function App() {
     }
 
     function addToDoList(title: string) {
-        let newToDoList: ToDoListType = {id: v1(), title: title, filter: 'all'}
-        tasks[newToDoList.id] = []
-        setToDoLists([newToDoList, ...toDoLists])
+        if (title) {
+            let newToDoList: ToDoListType = {id: v1(), title: title, filter: 'all'}
+            tasks[newToDoList.id] = []
+            setToDoLists([newToDoList, ...toDoLists])
+        }
+    }
+
+    function changeToDoListTitle(id: string, newTitle: string) {
+        let toDoList: ToDoListType | undefined  = toDoLists.find(toDoList => toDoList.id === id)
+        if (toDoList) toDoList.title = newTitle
+        setToDoLists([...toDoLists])
     }
 
     return (
         <div className="App">
-            <AddItem addItem={ (title: string) => addToDoList(title) }/>
+            <div><AddItem addItem={ (title: string) => addToDoList(title) }
+                     defaultTitle={'Новый ToDoList'} /></div>
 
             {toDoLists.map(el => {
                 return <ToDoList

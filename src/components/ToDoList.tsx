@@ -12,6 +12,7 @@ type ToDoListType = {
     changeStatus: (id: string) => void
     filter: FilterType
     removeList: (toDoListId: string) => void
+    changeToDoListTitle: (toDoListId: string, newTitle: string) => void
 }
 
 export type TaskType = {
@@ -26,17 +27,25 @@ export function ToDoList(props: ToDoListType) {
         props.addTask(title, props.id)
     }
 
+    const changeToDoListTitle = (newTitle: string) => {
+        props.changeToDoListTitle(props.id, newTitle)
+    }
+
     return (
         <div>
             <h3>
-                {props.title}
+                <EditableSpan title={props.title} onChange={changeToDoListTitle}/>
                 <button onClick={() => props.removeList(props.id)}>X</button>
             </h3>
 
-            <AddItem addItem={addTask} />
+            <AddItem addItem={addTask} defaultTitle={''} />
 
             <ul>
                 {props.tasks.map(el => {
+                    const onChangeHandler = (newTitle: string) => {
+                        props.changeTaskTitle(props.id, el.id, newTitle)
+                    }
+
                     return (
                         <li key={el.id} className={el.isDone ? 'is-done' : ''}>
                             <input type="checkbox"
@@ -44,7 +53,7 @@ export function ToDoList(props: ToDoListType) {
                                    onChange={() => props.changeStatus(el.id, props.id)}
                             />
 
-                            <EditableSpan title={el.title} />
+                            <EditableSpan title={el.title} onChange={onChangeHandler} />
 
                             <button onClick={() => props.removeTask(el.id, props.id)}> Удалить</button>
                         </li>
