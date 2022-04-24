@@ -1,6 +1,7 @@
 import React from 'react';
 import {FilterType} from '../App'
 import {AddItem} from './AddItem';
+import {EditableSpan} from './EditableSpan';
 
 type ToDoListType = {
     title: string
@@ -42,7 +43,9 @@ export function ToDoList(props: ToDoListType) {
                                    checked={el.isDone}
                                    onChange={() => props.changeStatus(el.id, props.id)}
                             />
-                            <span>{el.title}</span>
+
+                            <EditableSpan title={el.title} />
+
                             <button onClick={() => props.removeTask(el.id, props.id)}> Удалить</button>
                         </li>
                     )
@@ -68,3 +71,4 @@ export function ToDoList(props: ToDoListType) {
         </div>
     );
 }
+
