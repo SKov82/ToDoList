@@ -46,7 +46,7 @@ function App() {
         {id: v1(), title: 'Films to watch ', filter: 'all'},
     ])
 
-    let [tasks, setTasks] = useState({
+    let [tasks, setTasks] = useState<TasksListType>({
         [toDoLists[0]?.id]: [
             {id: v1(), title: "HTML/CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -74,9 +74,15 @@ function App() {
         setToDoLists(filteredToDoList)
     }
 
+    function addToDoList(title: string) {
+        let newToDoList: ToDoListType = {id: v1(), title: title, filter: 'all'}
+        tasks[newToDoList.id] = []
+        setToDoLists([newToDoList, ...toDoLists])
+    }
+
     return (
         <div className="App">
-            <AddItem addItem={ () => {} }/>
+            <AddItem addItem={ (title: string) => addToDoList(title) }/>
 
             {toDoLists.map(el => {
                 return <ToDoList
