@@ -1,8 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 
 type AddItemType = {
-    id: string
-    addTask: (title: string, toDoListId: string) => void
+    addItem: (title: string) => void
 }
 
 export function AddItem(props: AddItemType) {
@@ -19,7 +18,7 @@ export function AddItem(props: AddItemType) {
                    }}
                    onKeyPress={(event: KeyboardEvent<HTMLInputElement>) => {
                        if (event.key === 'Enter' && taskTitle.trim()) {
-                           props.addTask(taskTitle.trim(), props.id)
+                           props.addItem(taskTitle.trim())
                            setTaskTitle('')
                        } else {
                            setError('Field is required')
@@ -29,7 +28,7 @@ export function AddItem(props: AddItemType) {
 
             <button onClick={() => {
                 if (taskTitle.trim()) {
-                    props.addTask(taskTitle.trim(), props.id)
+                    props.addItem(taskTitle.trim())
                     setTaskTitle('')
                 } else {
                     setError('Field is required')

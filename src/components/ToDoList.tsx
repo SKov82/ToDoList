@@ -20,14 +20,19 @@ export type TaskType = {
 }
 
 export function ToDoList(props: ToDoListType) {
+
+    const addTask = (title: string) => {
+        props.addTask(title, props.id)
+    }
+
     return (
         <div>
             <h3>
                 {props.title}
-                <button onClick={(event) => props.removeList(props.id)}>X</button>
+                <button onClick={() => props.removeList(props.id)}>X</button>
             </h3>
 
-            <AddItem id={props.id} addTask={props.addTask} />
+            <AddItem addItem={addTask} />
 
             <ul>
                 {props.tasks.map(el => {

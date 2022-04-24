@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {TaskType, ToDoList} from "./components/ToDoList";
 import {v1} from 'uuid';
+import {AddItem} from './components/AddItem';
 
 export type FilterType = 'all' | 'active' | 'done'
 
@@ -41,8 +42,8 @@ function App() {
 
     let [toDoLists, setToDoLists] = useState<Array<ToDoListType>>([
         {id: v1(), title: 'What to learn ', filter: 'all'},
-        {id: v1(), title: 'What to buy ', filter: 'active'},
-        {id: v1(), title: 'Films to watch ', filter: 'done'},
+        {id: v1(), title: 'What to buy ', filter: 'all'},
+        {id: v1(), title: 'Films to watch ', filter: 'all'},
     ])
 
     let [tasks, setTasks] = useState({
@@ -75,6 +76,8 @@ function App() {
 
     return (
         <div className="App">
+            <AddItem addItem={ () => {} }/>
+
             {toDoLists.map(el => {
                 return <ToDoList
                     key = {el.id}
