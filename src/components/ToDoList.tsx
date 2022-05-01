@@ -2,7 +2,7 @@ import React from 'react';
 import {FilterType} from '../App'
 import {AddItem} from './AddItem';
 import {EditableSpan} from './EditableSpan';
-import {Button, IconButton} from '@mui/material';
+import {Button, ButtonGroup, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 type ToDoListType = {
@@ -73,23 +73,22 @@ export function ToDoList(props: ToDoListType) {
                     )
                 })}
             </ul>
-            <div>
-                <button onClick={() => props.changeFilter('all')}
-                        className={props.filter === 'all' ? 'active-filter' : ''}
-                >
-                    Все
-                </button>
-                <button onClick={() => props.changeFilter('active')}
-                        className={props.filter === 'active' ? 'active-filter' : ''}
-                >
-                    Активные
-                </button>
-                <button onClick={() => props.changeFilter('done')}
-                        className={props.filter === 'done' ? 'active-filter' : ''}
-                >
-                    Завершенные
-                </button>
-            </div>
+            <ButtonGroup variant={'outlined'}
+                         color={'primary'}
+                         size={'small'}
+            >
+                <Button onClick={ () => props.changeFilter('all', props.id) }
+                        variant={props.filter === 'all' ? 'contained' : undefined}
+                > Все </Button>
+
+                <Button onClick={ () => props.changeFilter('active', props.id) }
+                        variant={props.filter === 'active' ? 'contained' : undefined}
+                > Активные </Button>
+
+                <Button onClick={ () => props.changeFilter('done', props.id) }
+                        variant={props.filter === 'done' ? 'contained' : undefined}
+                > Завершенные </Button>
+            </ButtonGroup>
         </div>
     );
 }
