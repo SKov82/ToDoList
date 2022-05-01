@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Button, TextField} from '@mui/material';
+import {IconButton, TextField} from '@mui/material';
+import AddTaskIcon from '@mui/icons-material/AddTask';
 
 type AddItemType = {
     addItem: (title: string) => void
@@ -39,11 +40,9 @@ export function AddItem({addItem, defaultTitle}: AddItemType) {
             />
 
             {addItem.name !== 'changeEditMode'
-            ? <Button onClick={addHandler}
-                      variant={'outlined'}
-                      color={'primary'}
-                      size={'small'}
-                > + </Button>
+            ? <IconButton onClick={addHandler}>
+                    <AddTaskIcon fontSize={'medium'} color={'primary'} />
+              </IconButton>
             : ''}
         </>
     )
