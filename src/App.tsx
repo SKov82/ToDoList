@@ -3,6 +3,8 @@ import './App.css';
 import {TaskType, ToDoList} from "./components/ToDoList";
 import {v1} from 'uuid';
 import {AddItem} from './components/AddItem';
+import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 export type FilterType = 'all' | 'active' | 'done'
 
@@ -107,30 +109,57 @@ function App() {
 
     return (
         <div className="App">
-            <div><AddItem addItem={ (title: string) => addToDoList(title) }
-                     defaultTitle={'Новый ToDoList'} /></div>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{ mr: 2 }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
 
-            {toDoLists.map(el => {
-                let filteredTasks = tasks[el.id]
-                if (el.filter === 'active') filteredTasks = tasks[el.id].filter(task => !task.isDone)
-                if (el.filter === 'done') filteredTasks = tasks[el.id].filter(task => task.isDone)
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        ToDoLists
+                    </Typography>
 
-                return <ToDoList
-                    key={el.id}
-                    id={el.id}
-                    title={el.title}
-                    tasks={filteredTasks}
-                    removeTask={removeTask}
-                    changeFilter={changeFilter}
-                    addTask={addTask}
-                    changeStatus={changeStatus}
-                    changeTaskTitle={changeTaskTitle}
-                    filter={el.filter}
-                    removeList={removeList}
-                    changeToDoListTitle={changeToDoListTitle}
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+
+            <Grid sx={{ marginTop: 3, marginLeft: 3 }}>
+                <AddItem addItem={ (title: string) => addToDoList(title) }
+                         defaultTitle={'Новый ToDoList'}
                 />
-                }
-            )}
+            </Grid>
+
+            <Container maxWidth="xl" sx={{ marginTop: 3 }}>
+                <Grid container spacing={5}>
+                    {toDoLists.map(el => {
+                        let filteredTasks = tasks[el.id]
+                        if (el.filter === 'active') filteredTasks = tasks[el.id].filter(task => !task.isDone)
+                        if (el.filter === 'done') filteredTasks = tasks[el.id].filter(task => task.isDone)
+
+                        return <ToDoList
+                            key={el.id}
+                            id={el.id}
+                            title={el.title}
+                            tasks={filteredTasks}
+                            removeTask={removeTask}
+                            changeFilter={changeFilter}
+                            addTask={addTask}
+                            changeStatus={changeStatus}
+                            changeTaskTitle={changeTaskTitle}
+                            filter={el.filter}
+                            removeList={removeList}
+                            changeToDoListTitle={changeToDoListTitle}
+                        />
+                        }
+                    )}
+                </Grid>
+            </Container>
         </div>
     );
 }

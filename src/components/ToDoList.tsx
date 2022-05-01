@@ -2,7 +2,7 @@ import React from 'react';
 import {FilterType} from '../App'
 import {AddItem} from './AddItem';
 import {EditableSpan} from './EditableSpan';
-import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, ListItemIcon} from '@mui/material';
+import {Button, ButtonGroup, Checkbox, Grid, IconButton, List, ListItem, Paper} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 type ToDoListType = {
@@ -36,66 +36,68 @@ export function ToDoList(props: ToDoListType) {
     }
 
     return (
-        <div>
-            <h3>
-                <EditableSpan title={props.title} onChange={changeToDoListTitle}/>
+        <Grid item sm={6} md={4} lg={3}>
+            <Paper elevation={20} sx={{marginBottom: 3}}>
+                <h3>
+                    <EditableSpan title={props.title} onChange={changeToDoListTitle}/>
 
-                <IconButton onClick={ () => props.removeList(props.id) }
-                            color={'primary'}
-                            size={'small'}
-                >
-                    <DeleteIcon fontSize={'small'} />
-                </IconButton>
-            </h3>
-
-            <AddItem addItem={addTask} defaultTitle={''} />
-
-            <List sx={{ width: '100%', maxWidth: 400, bgcolor: 'background.paper' }}>
-                {props.tasks.map(el => {
-                    const onChangeHandler = (newTitle: string) => {
-                        props.changeTaskTitle(props.id, el.id, newTitle)
-                    }
-
-                    return (
-                        <ListItem key={el.id}
-                                  className={el.isDone ? 'is-done' : ''}
-                        >
-                            <Checkbox
-                                checked={el.isDone}
-                                onChange={ () => props.changeStatus(el.id, props.id) }
+                    <IconButton onClick={ () => props.removeList(props.id) }
+                                color={'primary'}
                                 size={'small'}
-                            />
+                    >
+                        <DeleteIcon fontSize={'small'} />
+                    </IconButton>
+                </h3>
 
-                            <EditableSpan title={el.title} onChange={onChangeHandler} />
+                <AddItem addItem={addTask} defaultTitle={''} />
 
-                            <IconButton onClick={ () => props.removeTask(el.id, props.id) }
-                                        color={'primary'}
-                                        size={'small'}
+                <List sx={{ width: '100%', maxWidth: 400 }}>
+                    {props.tasks.map(el => {
+                        const onChangeHandler = (newTitle: string) => {
+                            props.changeTaskTitle(props.id, el.id, newTitle)
+                        }
+
+                        return (
+                            <ListItem key={el.id}
+                                      className={el.isDone ? 'is-done' : ''}
                             >
-                                <DeleteIcon fontSize={'small'} />
-                            </IconButton>
-                        </ListItem>
-                    )
-                })}
-            </List>
+                                <Checkbox
+                                    checked={el.isDone}
+                                    onChange={ () => props.changeStatus(el.id, props.id) }
+                                    size={'small'}
+                                />
 
-            <ButtonGroup variant={'outlined'}
-                         color={'primary'}
-                         size={'small'}
-            >
-                <Button onClick={ () => props.changeFilter('all', props.id) }
-                        variant={props.filter === 'all' ? 'contained' : undefined}
-                > Все </Button>
+                                <EditableSpan title={el.title} onChange={onChangeHandler} />
 
-                <Button onClick={ () => props.changeFilter('active', props.id) }
-                        variant={props.filter === 'active' ? 'contained' : undefined}
-                > Активные </Button>
+                                <IconButton onClick={ () => props.removeTask(el.id, props.id) }
+                                            color={'primary'}
+                                            size={'small'}
+                                >
+                                    <DeleteIcon fontSize={'small'} />
+                                </IconButton>
+                            </ListItem>
+                        )
+                    })}
+                </List>
 
-                <Button onClick={ () => props.changeFilter('done', props.id) }
-                        variant={props.filter === 'done' ? 'contained' : undefined}
-                > Завершенные </Button>
-            </ButtonGroup>
-        </div>
+                <ButtonGroup variant={'outlined'}
+                             color={'primary'}
+                             size={'small'}
+                >
+                    <Button onClick={ () => props.changeFilter('all', props.id) }
+                            variant={props.filter === 'all' ? 'contained' : undefined}
+                    > Все </Button>
+
+                    <Button onClick={ () => props.changeFilter('active', props.id) }
+                            variant={props.filter === 'active' ? 'contained' : undefined}
+                    > Активные </Button>
+
+                    <Button onClick={ () => props.changeFilter('done', props.id) }
+                            variant={props.filter === 'done' ? 'contained' : undefined}
+                    > Завершенные </Button>
+                </ButtonGroup>
+            </Paper>
+        </Grid>
     );
 }
 

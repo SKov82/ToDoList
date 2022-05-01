@@ -1,15 +1,19 @@
-/*.App {*/
-/*  padding: 30px;*/
-/*  display: flex;*/
-/*}*/
+.App {
+  min-height: 100vh;
+  position: relative;
+}
 
-/*.App > div {*/
-/*  margin-right: 50px;*/
-/*}*/
-
-/*li {*/
-/*  list-style: none;*/
-/*}*/
+.App:after {
+  content: "";
+  background: url("https://cws.media/wp-content/uploads/2020/07/blank-blank-page-business-data-315791.jpg") 0 0/cover no-repeat fixed;
+  opacity: .45;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+}
 
 .is-done {
   opacity: .5;
