@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Button} from '@mui/material';
+import {Button, TextField} from '@mui/material';
 
 type AddItemType = {
     addItem: (title: string) => void
@@ -21,17 +21,21 @@ export function AddItem({addItem, defaultTitle}: AddItemType) {
 
     return (
         <>
-            <input value={title}
-                   className={error ? 'error' : ''}
-                   onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                       setTitle(event.currentTarget.value)
-                       setError('')
-                   }}
-                   onKeyPress={(event: KeyboardEvent<HTMLInputElement>) => {
-                       if (event.key === 'Enter') addHandler()
-                   }}
-                   onBlur={ () => addItem('') }
-                   autoFocus
+            <TextField value={title}
+                       onChange={ (event: ChangeEvent<HTMLInputElement>) => {
+                           setTitle(event.currentTarget.value)
+                           setError('')
+                       }}
+                       onKeyPress={ (event: KeyboardEvent<HTMLInputElement>) => {
+                           if (event.key === 'Enter') addHandler()
+                       }}
+                       onBlur={ () => addItem('') }
+                       autoFocus
+                       label={defaultTitle ? defaultTitle : 'Новая задача'}
+                       variant="outlined"
+                       size={'small'}
+                       error={!!error}
+                       helperText={error}
             />
 
             {addItem.name !== 'changeEditMode'
@@ -41,8 +45,6 @@ export function AddItem({addItem, defaultTitle}: AddItemType) {
                       size={'small'}
                 > + </Button>
             : ''}
-
-            {error && <div className={'error-message'}>{error}</div>}
         </>
     )
 }
