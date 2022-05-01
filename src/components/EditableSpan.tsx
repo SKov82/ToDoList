@@ -1,4 +1,4 @@
-import React, {KeyboardEvent, useState} from 'react';
+import React, {useState} from 'react';
 import {AddItem} from './AddItem';
 
 type EditableSpanType = {
