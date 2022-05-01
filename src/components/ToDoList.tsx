@@ -2,7 +2,7 @@ import React from 'react';
 import {FilterType} from '../App'
 import {AddItem} from './AddItem';
 import {EditableSpan} from './EditableSpan';
-import {Button, ButtonGroup, IconButton} from '@mui/material';
+import {Button, ButtonGroup, Checkbox, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 type ToDoListType = {
@@ -56,9 +56,10 @@ export function ToDoList(props: ToDoListType) {
 
                     return (
                         <li key={el.id} className={el.isDone ? 'is-done' : ''}>
-                            <input type="checkbox"
-                                   checked={el.isDone}
-                                   onChange={() => props.changeStatus(el.id, props.id)}
+                            <Checkbox
+                                checked={el.isDone}
+                                onChange={ () => props.changeStatus(el.id, props.id) }
+                                size={'small'}
                             />
 
                             <EditableSpan title={el.title} onChange={onChangeHandler} />
