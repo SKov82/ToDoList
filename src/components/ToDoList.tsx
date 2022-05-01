@@ -2,6 +2,8 @@ import React from 'react';
 import {FilterType} from '../App'
 import {AddItem} from './AddItem';
 import {EditableSpan} from './EditableSpan';
+import {Button, IconButton} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type ToDoListType = {
     title: string
@@ -35,7 +37,13 @@ export function ToDoList(props: ToDoListType) {
         <div>
             <h3>
                 <EditableSpan title={props.title} onChange={changeToDoListTitle}/>
-                <button onClick={() => props.removeList(props.id)}>X</button>
+
+                <IconButton onClick={ () => props.removeList(props.id) }
+                            color={'primary'}
+                            size={'small'}
+                >
+                    <DeleteIcon fontSize={'small'} />
+                </IconButton>
             </h3>
 
             <AddItem addItem={addTask} defaultTitle={''} />
@@ -55,7 +63,12 @@ export function ToDoList(props: ToDoListType) {
 
                             <EditableSpan title={el.title} onChange={onChangeHandler} />
 
-                            <button onClick={() => props.removeTask(el.id, props.id)}> Удалить</button>
+                            <IconButton onClick={ () => props.removeTask(el.id, props.id) }
+                                        color={'primary'}
+                                        size={'small'}
+                            >
+                                <DeleteIcon fontSize={'small'} />
+                            </IconButton>
                         </li>
                     )
                 })}

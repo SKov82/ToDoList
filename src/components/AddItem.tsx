@@ -1,4 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Button} from '@mui/material';
 
 type AddItemType = {
     addItem: (title: string) => void
@@ -34,7 +35,11 @@ export function AddItem({addItem, defaultTitle}: AddItemType) {
             />
 
             {addItem.name !== 'changeEditMode'
-            ? <button onClick={addHandler}>+</button>
+            ? <Button onClick={addHandler}
+                      variant={'outlined'}
+                      color={'primary'}
+                      size={'small'}
+                > + </Button>
             : ''}
 
             {error && <div className={'error-message'}>{error}</div>}
