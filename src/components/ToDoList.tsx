@@ -6,12 +6,14 @@ import {Button, ButtonGroup, Checkbox, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 type ToDoListType = {
+    id: string
     title: string
     tasks: Array<TaskType>
-    removeTask: (id: string) => void
-    changeFilter: (filter: FilterType) => void
-    addTask: (title: string) => void
-    changeStatus: (id: string) => void
+    removeTask: (id: string, toDoListId: string) => void
+    changeFilter: (filter: FilterType, toDoListId: string) => void
+    addTask: (title: string, toDoListId: string) => void
+    changeStatus: (id: string, toDoListId: string) => void
+    changeTaskTitle: (toDoListId: string, id: string, newTitle: string) => void
     filter: FilterType
     removeList: (toDoListId: string) => void
     changeToDoListTitle: (toDoListId: string, newTitle: string) => void

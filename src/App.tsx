@@ -6,6 +6,16 @@ import {AddItem} from './components/AddItem';
 
 export type FilterType = 'all' | 'active' | 'done'
 
+type ToDoListType = {
+    id: string
+    title: string
+    filter: FilterType
+}
+
+type TasksListType = {
+    [key: string]: Array<TaskType>
+}
+
 function App() {
     function removeTask(id: string, toDoListId: string) {
         tasks[toDoListId] = tasks[toDoListId].filter(task => task.id !== id)
@@ -25,13 +35,12 @@ function App() {
         }
     }
 
-    let filteredTasks = tasks
-    let [filter, setFilter] = useState<FilterType>('all')
-    if (filter === 'active') filteredTasks = tasks.filter(task => !task.isDone)
-    if (filter === 'done') filteredTasks = tasks.filter(task => task.isDone)
-
-    function changeFilter(filter: FilterType) {
-        setFilter(filter)
+    function changeFilter(filter: FilterType, toDoListId: string) {
+        let toDoList = toDoLists.find(toDoList => toDoList.id === toDoListId)
+        if (toDoList) {
+            toDoList.filter = filter
+            setToDoLists([...toDoLists])
+        }
     }
 
     function changeStatus(id: string, toDoListId: string) {
@@ -102,15 +111,23 @@ function App() {
                      defaultTitle={'Новый ToDoList'} /></div>
 
             {toDoLists.map(el => {
+                let filteredTasks = tasks[el.id]
+                if (el.filter === 'active') filteredTasks = tasks[el.id].filter(task => !task.isDone)
+                if (el.filter === 'done') filteredTasks = tasks[el.id].filter(task => task.isDone)
+
                 return <ToDoList
-                    key = {el.id}
+                    key={el.id}
+                    id={el.id}
                     title={el.title}
                     tasks={filteredTasks}
                     removeTask={removeTask}
                     changeFilter={changeFilter}
                     addTask={addTask}
                     changeStatus={changeStatus}
-                    filter={filter}
+                    changeTaskTitle={changeTaskTitle}
+                    filter={el.filter}
+                    removeList={removeList}
+                    changeToDoListTitle={changeToDoListTitle}
                 />
                 }
             )}
