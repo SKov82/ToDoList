@@ -136,7 +136,7 @@ function App() {
             </Grid>
 
             <Container maxWidth="xl" sx={{ marginTop: 3 }}>
-                <Grid container spacing={5}>
+                <Grid container spacing={5} justifyContent={'space-evenly'}>
                     {toDoLists.map(el => {
                         let filteredTasks = tasks[el.id]
                         if (el.filter === 'active') filteredTasks = tasks[el.id].filter(task => !task.isDone)

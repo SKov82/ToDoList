@@ -37,7 +37,7 @@ export function ToDoList(props: ToDoListType) {
 
     return (
         <Grid item sm={6} md={4} lg={3}>
-            <Paper elevation={20} sx={{marginBottom: 3}}>
+            <Paper elevation={20} sx={{marginBottom: 3, padding: 3, bgcolor: "#fefcee"}}>
                 <h3>
                     <EditableSpan title={props.title} onChange={changeToDoListTitle}/>
 
