@@ -40,7 +40,7 @@ export function AddItem({addItem, defaultTitle}: AddItemType) {
             />
 
             {addItem.name !== 'changeEditMode'
-            ? <IconButton onClick={addHandler}>
+            ? <IconButton onClick={addHandler} sx={{ marginLeft: "2px" }}>
                     <AddTaskIcon fontSize={'medium'} color={'primary'} />
               </IconButton>
             : ''}

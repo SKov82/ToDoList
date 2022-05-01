@@ -2,7 +2,7 @@ import React from 'react';
 import {FilterType} from '../App'
 import {AddItem} from './AddItem';
 import {EditableSpan} from './EditableSpan';
-import {Button, ButtonGroup, Checkbox, Grid, IconButton, List, ListItem, Paper} from '@mui/material';
+import {Button, ButtonGroup, Checkbox, Grid, IconButton, List, ListItem, Paper, Typography} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 type ToDoListType = {
@@ -37,8 +37,8 @@ export function ToDoList(props: ToDoListType) {
 
     return (
         <Grid item sm={6} md={4} lg={3}>
-            <Paper elevation={20} sx={{marginBottom: 3, padding: 3, bgcolor: "#fefcee"}}>
-                <h3>
+            <Paper elevation={20} sx={{marginBottom: 3, padding: 3, bgcolor: "#fbfae4", width: "fit-content"}}>
+                <Typography variant="h5" component="div" align="center" gutterBottom={true} fontWeight={600} maxWidth={270}>
                     <EditableSpan title={props.title} onChange={changeToDoListTitle}/>
 
                     <IconButton onClick={ () => props.removeList(props.id) }
@@ -47,11 +47,11 @@ export function ToDoList(props: ToDoListType) {
                     >
                         <DeleteIcon fontSize={'small'} />
                     </IconButton>
-                </h3>
+                </Typography>
 
                 <AddItem addItem={addTask} defaultTitle={''} />
 
-                <List sx={{ width: '100%', maxWidth: 400 }}>
+                <List sx={{ width: '100%', maxWidth: 270 }}>
                     {props.tasks.map(el => {
                         const onChangeHandler = (newTitle: string) => {
                             props.changeTaskTitle(props.id, el.id, newTitle)
@@ -60,6 +60,8 @@ export function ToDoList(props: ToDoListType) {
                         return (
                             <ListItem key={el.id}
                                       className={el.isDone ? 'is-done' : ''}
+                                      divider={true}
+                                      sx={{ padding: "5px" }}
                             >
                                 <Checkbox
                                     checked={el.isDone}

@@ -5,7 +5,7 @@
 
 .App:after {
   content: "";
-  background: url("https://cws.media/wp-content/uploads/2020/07/blank-blank-page-business-data-315791.jpg") 0 0/cover no-repeat fixed;
+  background: url("https://cws.media/wp-content/uploads/2020/07/blank-blank-page-business-data-315791.jpg") 0 6px/cover no-repeat fixed;
   opacity: .45;
   position: absolute;
   top: 0;
