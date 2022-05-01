@@ -2,7 +2,7 @@ import React from 'react';
 import {FilterType} from '../App'
 import {AddItem} from './AddItem';
 import {EditableSpan} from './EditableSpan';
-import {Button, ButtonGroup, Checkbox, IconButton} from '@mui/material';
+import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, ListItemIcon} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 type ToDoListType = {
@@ -50,14 +50,16 @@ export function ToDoList(props: ToDoListType) {
 
             <AddItem addItem={addTask} defaultTitle={''} />
 
-            <ul>
+            <List sx={{ width: '100%', maxWidth: 400, bgcolor: 'background.paper' }}>
                 {props.tasks.map(el => {
                     const onChangeHandler = (newTitle: string) => {
                         props.changeTaskTitle(props.id, el.id, newTitle)
                     }
 
                     return (
-                        <li key={el.id} className={el.isDone ? 'is-done' : ''}>
+                        <ListItem key={el.id}
+                                  className={el.isDone ? 'is-done' : ''}
+                        >
                             <Checkbox
                                 checked={el.isDone}
                                 onChange={ () => props.changeStatus(el.id, props.id) }
@@ -72,10 +74,11 @@ export function ToDoList(props: ToDoListType) {
                             >
                                 <DeleteIcon fontSize={'small'} />
                             </IconButton>
-                        </li>
+                        </ListItem>
                     )
                 })}
-            </ul>
+            </List>
+
             <ButtonGroup variant={'outlined'}
                          color={'primary'}
                          size={'small'}
