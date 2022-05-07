@@ -1,7 +1,7 @@
 import {FilterType, ToDoListType} from '../App';
 import {v1} from 'uuid';
 
-type ActionType = {
+export type ActionType = {
     type: 'REMOVE-TODOLIST'
         | 'ADD-TODOLIST'
         | 'CHANGE-TITLE'
@@ -29,4 +29,20 @@ export const todolistReducer = (state: Array<ToDoListType>, action: ActionType):
         default:
             throw new Error('Unknown action type')
     }
+}
+
+export const removeTDListActionCreator = (id: string): ActionType => {
+    return { type: 'REMOVE-TODOLIST', id: id }
+}
+
+export const addTDListActionCreator = (title: string): ActionType => {
+    return { type: 'ADD-TODOLIST', title: title }
+}
+
+export const changeTitleActionCreator = (id: string, title: string): ActionType => {
+    return { type: 'CHANGE-TITLE', id: id, title: title }
+}
+
+export const changeFilterActionCreator = (id: string, filter: FilterType): ActionType => {
+    return {type: 'CHANGE-FILTER', id: id, filter: filter}
 }
