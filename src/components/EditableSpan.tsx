@@ -18,7 +18,7 @@ export function EditableSpan({title, onChange}: EditableSpanType) {
 
     return (
         editMode
-        ? <AddItem addItem={changeEditMode} defaultTitle={title} />
-        : <span onDoubleClick={ () => changeEditMode('') }>{title}</span>
+            ? <AddItem addItem={changeEditMode} defaultTitle={title} />
+            : <span onDoubleClick={ () => changeEditMode('') }>{title}</span>
     )
 }
