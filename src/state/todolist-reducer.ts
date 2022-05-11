@@ -6,7 +6,7 @@ export type ActionType = {
         | 'ADD-TODOLIST'
         | 'CHANGE-TITLE'
         | 'CHANGE-FILTER'
-    id?: string
+    id: string
     title?: string
     filter?: FilterType
 }
@@ -16,8 +16,7 @@ export const todolistReducer = (state: Array<ToDoListType>, action: ActionType):
         case 'REMOVE-TODOLIST':
             return state.filter(el => el.id !== action.id)
         case 'ADD-TODOLIST':
-            return [ {id: v1(), title: action.title || '', filter: 'all'},
-                ...state ]
+            return [ { id: action.id, title: action.title || '', filter: 'all' }, ...state ]
         case 'CHANGE-TITLE':
             let tdl = state.find(el => el.id === action.id)
             if (tdl) tdl.title = action.title || ''
@@ -27,22 +26,19 @@ export const todolistReducer = (state: Array<ToDoListType>, action: ActionType):
             if (tdlist) tdlist.filter = action.filter || 'all'
             return [ ...state ]
         default:
-            throw new Error('Unknown action type')
+            return state
     }
 }
 
 export const removeTDListActionCreator = (id: string): ActionType => {
     return { type: 'REMOVE-TODOLIST', id: id }
 }
-
 export const addTDListActionCreator = (title: string): ActionType => {
-    return { type: 'ADD-TODOLIST', title: title }
+    return { type: 'ADD-TODOLIST', id: v1(), title: title }
 }
-
 export const changeTitleActionCreator = (id: string, title: string): ActionType => {
     return { type: 'CHANGE-TITLE', id: id, title: title }
 }
-
 export const changeFilterActionCreator = (id: string, filter: FilterType): ActionType => {
     return {type: 'CHANGE-FILTER', id: id, filter: filter}
 }

@@ -6,7 +6,9 @@ export type ActionType = {
         | 'ADD-TASK'
         | 'CHANGE-TITLE'
         | 'CHANGE-STATUS'
-    tdlId?: string
+        | 'ADD-TASKS-ARRAY'
+        | 'REMOVE-TASKS-ARRAY'
+    tdlId: string
     taskId?: string
     title?: string
 }
@@ -14,31 +16,37 @@ export type ActionType = {
 export const tasksReducer = (state: TasksListType, action: ActionType): TasksListType => {
     switch (action.type) {
         case 'REMOVE-TASK':
-            if (action.tdlId && action.taskId) {
+            if (action.taskId) {
                 return {...state, [action.tdlId]: state[action.tdlId].filter(t => t.id !== action.taskId)}
             }
             return state
         case 'ADD-TASK':
-            if (action.title && action.tdlId) {
+            if (action.title) {
                 return {...state, [action.tdlId]:
                         [ {id: v1(), title: action.title, isDone: false}, ...state[action.tdlId] ]
                 }
             }
             return state
         case 'CHANGE-TITLE':
-            if (action.tdlId && action.taskId && action.title) {
+            if (action.taskId && action.title) {
                 return {...state, [action.tdlId]: state[action.tdlId].map(
                     t => t.id === action.taskId ? {...t, title: action.title || ''} : t
                 )}
             }
             return state
         case 'CHANGE-STATUS':
-            if (action.tdlId && action.taskId) {
+            if (action.taskId) {
                 return {...state, [action.tdlId]: state[action.tdlId].map(
                     t => t.id === action.taskId ? {...t, isDone: !t.isDone} : t
                 )}
             }
             return state
+        case 'ADD-TASKS-ARRAY':
+            return { [action.tdlId]: [], ...state }
+        case 'REMOVE-TASKS-ARRAY':
+            let newState = {...state}
+            delete newState[action.tdlId]
+            return newState
         default:
             return state
     }
@@ -54,5 +62,11 @@ export const changeTitleAC = (tdlId: string, taskId: string, title: string): Act
     return { type: 'CHANGE-TITLE', tdlId: tdlId, taskId: taskId, title: title }
 }
 export const changeStatusAC = (tdlId: string, taskId: string): ActionType => {
-    return {type: 'CHANGE-STATUS', tdlId: tdlId, taskId: taskId}
+    return { type: 'CHANGE-STATUS', tdlId: tdlId, taskId: taskId }
+}
+export const addTasksArrayAC = (tdlId: string): ActionType => {
+    return { type: 'ADD-TASKS-ARRAY', tdlId: tdlId }
+}
+export const removeTasksArrayAC = (tdlId: string): ActionType => {
+    return { type: 'REMOVE-TASKS-ARRAY', tdlId: tdlId }
 }
