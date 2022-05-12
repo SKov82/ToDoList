@@ -1,10 +1,7 @@
 import {v1} from 'uuid';
 import {ToDoListType} from '../App';
 import {
-    addTDListActionCreator, changeFilterActionCreator,
-    changeTitleActionCreator,
-    removeTDListActionCreator,
-    todolistReducer
+    addTDListAC, changeFilterAC, changeTDLTitleAC, removeTDListAC, todolistReducer
 } from './todolist-reducer';
 
 const startState: ToDoListType[] = [
@@ -14,14 +11,14 @@ const startState: ToDoListType[] = [
 ]
 
 test('remove todolist', () => {
-    const endState = todolistReducer(startState, removeTDListActionCreator(startState[0].id))
+    const endState = todolistReducer(startState, removeTDListAC(startState[0].id))
 
     expect(endState.length).toBe(startState.length - 1)
     expect(endState[0].id).toBe(startState[1].id)
 })
 
 test('add todolist', () => {
-    const endState = todolistReducer(startState, addTDListActionCreator('NewTodoList'))
+    const endState = todolistReducer(startState, addTDListAC(v1(), 'NewTodoList'))
 
     expect(endState.length).toBe(startState.length + 1)
     expect(endState[1].id).toBe(startState[0].id)
@@ -30,7 +27,7 @@ test('add todolist', () => {
 })
 
 test('change todolist title', () => {
-    const endState = todolistReducer(startState, changeTitleActionCreator(startState[1].id, 'NewTodoList'))
+    const endState = todolistReducer(startState, changeTDLTitleAC(startState[1].id, 'NewTodoList'))
 
     expect(endState[1].id).toBe(startState[1].id)
     expect(endState[1].filter).toBe(startState[1].filter)
@@ -39,7 +36,7 @@ test('change todolist title', () => {
 })
 
 test('change todolist filter', () => {
-    const endState = todolistReducer(startState, changeFilterActionCreator(startState[1].id, 'all'))
+    const endState = todolistReducer(startState, changeFilterAC(startState[1].id, 'all'))
 
     expect(endState[1].id).toBe(startState[1].id)
     expect(endState[1].filter).toBe('all')

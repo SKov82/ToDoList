@@ -2,18 +2,20 @@ import React from 'react';
 import {FilterType} from '../App'
 import {AddItem} from './AddItem';
 import {EditableSpan} from './EditableSpan';
-import {Button, ButtonGroup, Checkbox, Grid, IconButton, List, ListItem, Paper, Typography} from '@mui/material';
+import {
+    Button, ButtonGroup, Checkbox, Grid, IconButton, List, ListItem, Paper, Typography
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 type ToDoListType = {
     id: string
     title: string
     tasks: Array<TaskType>
-    removeTask: (id: string, toDoListId: string) => void
-    changeFilter: (filter: FilterType, toDoListId: string) => void
-    addTask: (title: string, toDoListId: string) => void
-    changeStatus: (id: string, toDoListId: string) => void
-    changeTaskTitle: (toDoListId: string, id: string, newTitle: string) => void
+    removeTask: (toDoListId: string, taskId: string) => void
+    changeFilter: (toDoListId: string, filter: FilterType) => void
+    addTask: (toDoListId: string, title: string) => void
+    changeStatus: (toDoListId: string, taskId: string) => void
+    changeTaskTitle: (toDoListId: string, taskId: string, newTitle: string) => void
     filter: FilterType
     removeList: (toDoListId: string) => void
     changeToDoListTitle: (toDoListId: string, newTitle: string) => void
@@ -28,7 +30,7 @@ export type TaskType = {
 export function ToDoList(props: ToDoListType) {
 
     const addTask = (title: string) => {
-        props.addTask(title, props.id)
+        props.addTask(props.id, title)
     }
 
     const changeToDoListTitle = (newTitle: string) => {
@@ -65,13 +67,13 @@ export function ToDoList(props: ToDoListType) {
                             >
                                 <Checkbox
                                     checked={el.isDone}
-                                    onChange={ () => props.changeStatus(el.id, props.id) }
+                                    onChange={ () => props.changeStatus(props.id, el.id) }
                                     size={'small'}
                                 />
 
                                 <EditableSpan title={el.title} onChange={onChangeHandler} />
 
-                                <IconButton onClick={ () => props.removeTask(el.id, props.id) }
+                                <IconButton onClick={ () => props.removeTask(props.id, el.id) }
                                             color={'primary'}
                                             size={'small'}
                                 >
@@ -86,15 +88,15 @@ export function ToDoList(props: ToDoListType) {
                              color={'primary'}
                              size={'small'}
                 >
-                    <Button onClick={ () => props.changeFilter('all', props.id) }
+                    <Button onClick={ () => props.changeFilter(props.id, 'all') }
                             variant={props.filter === 'all' ? 'contained' : undefined}
                     > Все </Button>
 
-                    <Button onClick={ () => props.changeFilter('active', props.id) }
+                    <Button onClick={ () => props.changeFilter(props.id, 'active') }
                             variant={props.filter === 'active' ? 'contained' : undefined}
                     > Активные </Button>
 
-                    <Button onClick={ () => props.changeFilter('done', props.id) }
+                    <Button onClick={ () => props.changeFilter(props.id, 'done') }
                             variant={props.filter === 'done' ? 'contained' : undefined}
                     > Завершенные </Button>
                 </ButtonGroup>

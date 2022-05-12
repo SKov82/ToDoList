@@ -1,7 +1,8 @@
 import {v1} from 'uuid';
 import {TasksListType} from '../App';
 import {
-    addTaskAC, addTasksArrayAC, changeStatusAC, changeTitleAC, removeTaskAC, removeTasksArrayAC, tasksReducer
+    addTaskAC, addTasksArrayAC, changeStatusAC, changeTaskTitleAC,
+    removeTaskAC, removeTasksArrayAC, tasksReducer
 } from './tasks-reducer';
 
 const [tdlId1, tdlId2] = [v1(), v1()]
@@ -32,7 +33,7 @@ test('remove task', () => {
 })
 
 test('add task', () => {
-    const endState = tasksReducer(startState, addTaskAC('NewTask', tdlId1))
+    const endState = tasksReducer(startState, addTaskAC(tdlId1, 'NewTask'))
 
     expect(endState[tdlId1].length).toBe(startState[tdlId1].length + 1)
     expect(endState[tdlId2].length).toBe(startState[tdlId2].length)
@@ -43,7 +44,7 @@ test('add task', () => {
 
 test('change task title', () => {
     const endState = tasksReducer(
-        startState, changeTitleAC(tdlId1, startState[tdlId1][0].id, 'NewTitle')
+        startState, changeTaskTitleAC(tdlId1, startState[tdlId1][0].id, 'NewTitle')
     )
 
     expect(endState[tdlId1].length).toBe(startState[tdlId1].length)
