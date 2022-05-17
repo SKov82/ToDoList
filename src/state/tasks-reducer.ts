@@ -1,5 +1,6 @@
 import {v1} from 'uuid';
 import {TasksListType} from '../App';
+import {tdlInitialState} from './todolist-reducer';
 
 type ActionType = removeTaskACType
     | addTaskACType
@@ -8,7 +9,29 @@ type ActionType = removeTaskACType
     | addTasksArrayACType
     | removeTasksArrayACType
 
-export const tasksReducer = (state: TasksListType, action: ActionType): TasksListType => {
+const initialState: TasksListType = {
+    [tdlInitialState[0]?.id]: [
+        {id: v1(), title: "HTML/CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "TS", isDone: false},
+        {id: v1(), title: "React", isDone: false},
+        {id: v1(), title: "Python", isDone: true},
+        {id: v1(), title: "Django", isDone: true},
+    ],
+    [tdlInitialState[1]?.id]: [
+        {id: v1(), title: "Хлеб", isDone: true},
+        {id: v1(), title: "Молоко", isDone: false},
+        {id: v1(), title: "Сок", isDone: false},
+        {id: v1(), title: "Витамины", isDone: true},
+    ],
+    [tdlInitialState[2]?.id]: [
+        {id: v1(), title: "Дориан Грей", isDone: true},
+        {id: v1(), title: "Зеленая миля", isDone: true},
+        {id: v1(), title: "Знакомьтесь, Джо Блэк", isDone: true},
+    ]
+}
+
+export const tasksReducer = (state: TasksListType = initialState, action: ActionType): TasksListType => {
     switch (action.type) {
         case 'REMOVE-TASK':
             return {...state, [action.payload.toDoListId]:
