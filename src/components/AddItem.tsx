@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import {IconButton, TextField} from '@mui/material';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 
@@ -7,18 +7,18 @@ type AddItemType = {
     defaultTitle: string
 }
 
-export function AddItem({addItem, defaultTitle}: AddItemType) {
+export const AddItem = React.memo( ({addItem, defaultTitle}: AddItemType) => {
     const [title, setTitle] = useState<string>(defaultTitle)
     const [error, setError] = useState<string>('')
 
-    function addHandler() {
+    const addHandler = useCallback(() => {
         if (title.trim()) {
             addItem(title.trim())
             setTitle(defaultTitle)
         } else {
             setError('Field is required')
         }
-    }
+    }, [title, addItem, defaultTitle])
 
     return (
         <>
@@ -40,10 +40,15 @@ export function AddItem({addItem, defaultTitle}: AddItemType) {
             />
 
             {addItem.name !== 'changeEditMode'
-            ? <IconButton onClick={addHandler} sx={{ marginLeft: "2px" }}>
+            ? <IconButton
+                    onMouseDown={(e) => {e.preventDefault()}}
+                    // onMouseDown перехватывает приоритет у onBlur и дает шанс отработать onClick
+                    onClick={addHandler}
+                    sx={{ marginLeft: "2px" }}
+                >
                     <AddTaskIcon fontSize={'medium'} color={'primary'} />
               </IconButton>
             : ''}
         </>
     )
-}
+} )

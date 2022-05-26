@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {FilterType} from '../App'
 import {AddItem} from './AddItem';
 import {EditableSpan} from './EditableSpan';
@@ -27,15 +27,18 @@ export type TaskType = {
     isDone: boolean
 }
 
-export function ToDoList(props: ToDoListType) {
-
-    const addTask = (title: string) => {
+export const ToDoList = React.memo( (props: ToDoListType) => {
+    const addTask = useCallback((title: string) => {
         props.addTask(props.id, title)
-    }
+    }, [props.addTask, props.id])
 
-    const changeToDoListTitle = (newTitle: string) => {
+    const changeToDoListTitle = useCallback((newTitle: string) => {
         props.changeToDoListTitle(props.id, newTitle)
-    }
+    }, [props.changeToDoListTitle, props.id])
+
+    let filteredTasks = props.tasks
+    if (props.filter === 'active') filteredTasks = props.tasks.filter(task => !task.isDone)
+    if (props.filter === 'done') filteredTasks = props.tasks.filter(task => task.isDone)
 
     return (
         <Grid item sm={6} md={4} lg={3}>
@@ -54,7 +57,7 @@ export function ToDoList(props: ToDoListType) {
                 <AddItem addItem={addTask} defaultTitle={''} />
 
                 <List sx={{ width: '100%', maxWidth: 270 }}>
-                    {props.tasks.map(el => {
+                    {filteredTasks.map(el => {
                         const onChangeHandler = (newTitle: string) => {
                             props.changeTaskTitle(props.id, el.id, newTitle)
                         }
@@ -103,4 +106,4 @@ export function ToDoList(props: ToDoListType) {
             </Paper>
         </Grid>
     );
-}
+} )

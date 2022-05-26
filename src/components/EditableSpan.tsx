@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {AddItem} from './AddItem';
 
 type EditableSpanType = {
@@ -6,19 +6,19 @@ type EditableSpanType = {
     onChange: (newTitle: string) => void
 }
 
-export function EditableSpan({title, onChange}: EditableSpanType) {
+export const EditableSpan = React.memo(({title, onChange}: EditableSpanType) => {
     let [editMode, setEditMode] = useState<boolean>(false)
 
-    function changeEditMode(newTitle: string) {
+    const changeEditMode = useCallback((newTitle: string) => {
         setEditMode(!editMode)
         if (newTitle && newTitle !== title) {
             onChange(newTitle)
         }
-    }
+    }, [editMode, title, onChange])
 
     return (
         editMode
             ? <AddItem addItem={changeEditMode} defaultTitle={title} />
             : <span onDoubleClick={ () => changeEditMode('') }>{title}</span>
     )
-}
+} )
