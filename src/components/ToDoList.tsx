@@ -45,7 +45,7 @@ export const ToDoList = React.memo( (props: ToDoListType) => {
     return (
         <Grid item sm={6} md={4} lg={3}>
             <Paper elevation={20} sx={{marginBottom: 3, padding: 3, bgcolor: "#fbfae4", width: "fit-content"}}>
-                <Typography variant="h5" component="div" align="center" gutterBottom={true} fontWeight={600} maxWidth={270}>
+                <Typography position="relative" variant="h5" component="div" align="center" gutterBottom={true} fontWeight={600} maxWidth={270}>
                     <EditableSpan title={props.title}
                                   onChange={changeToDoListTitle}
                                   onClick={onClickHandler}

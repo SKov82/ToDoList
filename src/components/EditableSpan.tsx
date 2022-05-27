@@ -27,6 +27,7 @@ export const EditableSpan = React.memo(({title, onChange, onClick}: EditableSpan
                 <IconButton onClick={onClick}
                             color={'primary'}
                             size={'small'}
+                            sx={{position: 'absolute', right: -7}}
                 >
                     <DeleteIcon fontSize={'small'}/>
                 </IconButton>

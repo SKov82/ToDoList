@@ -18,3 +18,10 @@
 .is-done {
   opacity: .5;
 }
+
+.listItem:hover {
+  background: #a1b7c4;
+  color: rgb(25, 118, 210);
+  opacity: .75;
+  transition: .5s;
+}
