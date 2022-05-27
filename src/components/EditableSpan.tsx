@@ -1,12 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import {AddItem} from './AddItem';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {IconButton} from '@mui/material';
 
 type EditableSpanType = {
     title: string
     onChange: (newTitle: string) => void
+    onClick: () => void
 }
 
-export const EditableSpan = React.memo(({title, onChange}: EditableSpanType) => {
+export const EditableSpan = React.memo(({title, onChange, onClick}: EditableSpanType) => {
     let [editMode, setEditMode] = useState<boolean>(false)
 
     const changeEditMode = useCallback((newTitle: string) => {
@@ -19,6 +22,14 @@ export const EditableSpan = React.memo(({title, onChange}: EditableSpanType) => 
     return (
         editMode
             ? <AddItem addItem={changeEditMode} defaultTitle={title} />
-            : <span onDoubleClick={ () => changeEditMode('') }>{title}</span>
+            : <>
+                <span onDoubleClick={ () => changeEditMode('') }>{title}</span>
+                <IconButton onClick={onClick}
+                            color={'primary'}
+                            size={'small'}
+                >
+                    <DeleteIcon fontSize={'small'}/>
+                </IconButton>
+            </>
     )
 } )
