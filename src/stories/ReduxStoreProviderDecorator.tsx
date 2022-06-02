@@ -14,27 +14,19 @@ const rootReducer = combineReducers({
 const initialState = {
     todolists: [
         {id: 'tdl1', title: 'What to learn ', filter: 'all'},
-        {id: 'tdl2', title: 'What to buy ', filter: 'active'},
-        {id: 'tdl3', title: 'Films to watch ', filter: 'done'},
+        {id: 'tdl2', title: 'Films to watch ', filter: 'done'},
     ],
     tasks: {
         ['tdl1']: [
             {id: v1(), title: "HTML/CSS", isDone: true},
-            {id: v1(), title: "JS", isDone: true},
-            {id: v1(), title: "TS", isDone: false},
+            {id: v1(), title: "JS / TS", isDone: true},
             {id: v1(), title: "React", isDone: false},
             {id: v1(), title: "Python", isDone: true},
-            {id: v1(), title: "Django", isDone: true},
+            {id: v1(), title: "Django", isDone: false},
         ],
         ['tdl2']: [
-            {id: v1(), title: "Хлеб", isDone: true},
-            {id: v1(), title: "Молоко", isDone: false},
-            {id: v1(), title: "Сок", isDone: false},
-            {id: v1(), title: "Витамины", isDone: true},
-        ],
-        ['tdl3']: [
             {id: v1(), title: "Дориан Грей", isDone: true},
-            {id: v1(), title: "Зеленая миля", isDone: true},
+            {id: v1(), title: "Зеленая миля", isDone: false},
             {id: v1(), title: "Знакомьтесь, Джо Блэк", isDone: true},
         ],
     }
