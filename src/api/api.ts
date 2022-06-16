@@ -68,7 +68,7 @@ export const API = {
     deleteTask(tdlID: string, taskID: string) {
         return instance.delete<ResponseType>(`todo-lists/${tdlID}/tasks/${taskID}`).then(response => response.data)
     },
-    updateTask(tdlID: string, taskID: string, task: any) {
+    updateTask(tdlID: string, taskID: string, task: TaskType) {
         return instance.put<CrUpdTaskResponseType>(`todo-lists/${tdlID}/tasks/${taskID}`, {...task}).then(response => response.data)
     },
 }
