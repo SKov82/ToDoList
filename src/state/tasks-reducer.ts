@@ -142,16 +142,8 @@ export const tasksReducer = (state: TasksListType = initialState, action: Action
             let newState = {...state}
             delete newState[action.payload.toDoListId]
             return newState
-        case 'SET-TODOLISTS':
-            const copyState: TasksListType = {}
-            action.payload.tasks.forEach(t => {
-                if (copyState[t.todoListId]) {
-                    copyState[t.todoListId].push(t)
-                } else {
-                    copyState[t.todoListId] = [t]
-                }
-            })
-            return copyState
+        case 'SET-TASKS':
+            return {...state, [action.payload.tdlID]: action.payload.tasks}
         default:
             return state
     }
@@ -163,7 +155,7 @@ type ActionType = removeTaskACType
     | changeStatusACType
     | addTasksArrayACType
     | removeTasksArrayACType
-    | SetTDLType
+    | SetTasksType
 
 type removeTaskACType = ReturnType<typeof removeTaskAC>
 type addTaskACType = ReturnType<typeof addTaskAC>
@@ -172,7 +164,7 @@ type changeStatusACType = ReturnType<typeof changeStatusAC>
 type addTasksArrayACType = ReturnType<typeof addTasksArrayAC>
 type removeTasksArrayACType = ReturnType<typeof removeTasksArrayAC>
 
-type SetTDLType = ReturnType<typeof SetTDL>
+type SetTasksType = ReturnType<typeof SetTasks>
 
 export const removeTaskAC = (toDoListId: string, taskId: string) => {
     return { type: 'REMOVE-TASK', payload: {toDoListId, taskId} } as const
@@ -193,6 +185,6 @@ export const removeTasksArrayAC = (toDoListId: string) => {
     return { type: 'REMOVE-TASKS-ARRAY', payload: {toDoListId} } as const
 }
 
-export const SetTDL = (tasks: Array<TaskType>) => {
-    return { type: 'SET-TODOLISTS', payload: {tasks} } as const
+export const SetTasks = (tdlID: string, tasks: Array<TaskType>) => {
+    return { type: 'SET-TASKS', payload: {tdlID, tasks} } as const
 }

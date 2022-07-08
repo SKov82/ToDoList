@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {ToDoList} from "./components/ToDoList";
 import {v1} from 'uuid';
@@ -7,18 +7,33 @@ import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from '
 import MenuIcon from '@mui/icons-material/Menu';
 import {
     addTaskAC, addTasksArrayAC, changeStatusAC, changeTaskTitleAC,
-    removeTaskAC, removeTasksArrayAC, TasksListType
+    removeTaskAC, removeTasksArrayAC, SetTasks, TasksListType
 } from './state/tasks-reducer';
 import {
-    addTDListAC, changeFilterAC, changeTDLTitleAC, FilterType, removeTDListAC, TDLType
+    addTDListAC, changeFilterAC, changeTDLTitleAC, FilterType, removeTDListAC, SetTDL, TDLType
 } from './state/todolist-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from './state/store';
+import {API} from './api/api';
 
 function AppWithRedux() {
     const dispatch = useDispatch()
     const todolists = useSelector<AppStateType, Array<TDLType>>( state => state.todolists )
     const tasks = useSelector<AppStateType, TasksListType>( state => state.tasks )
+
+    useEffect(() => {
+        API.getTDL()
+            .then(data => {
+                data.forEach(tdl => {
+                    dispatch(addTasksArrayAC(tdl.id))
+                    API.getTasks(tdl.id)
+                        .then(data => {
+                            dispatch(SetTasks(tdl.id, data.items))
+                        })
+                })
+                dispatch(SetTDL(data))
+            })
+    }, [])
 
     const removeTask = useCallback((toDoListId: string, taskId: string) => {
         dispatch(removeTaskAC(toDoListId, taskId))
@@ -42,6 +57,8 @@ function AppWithRedux() {
             let toDoListId = v1()
             dispatch(addTDListAC(toDoListId, title))
             dispatch(addTasksArrayAC(toDoListId))
+            API.createTDL(title)
+                .then(data => console.log('create - ', title, data))
         }
     }, [dispatch])
     const changeToDoListTitle = useCallback((toDoListId: string, newTitle: string) => {

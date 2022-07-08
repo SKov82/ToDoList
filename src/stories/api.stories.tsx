@@ -28,7 +28,7 @@ export const CreateTDL = () => {
     const [state, setState] = useState<TodoListType | null>(null)
 
     useEffect( () => {
-        API.createTDL( {title: 'Первый TDL'} ).then(
+        API.createTDL('Первый TDL').then(
             (data) => {
                 if (!data.resultCode) setState(data.data.item)
             }

@@ -60,8 +60,8 @@ export const API = {
     getTDL() {
         return instance.get<Array<TodoListType>>(`todo-lists`).then(response => response.data)
     },
-    createTDL(tdl: {title: string}) {
-        return instance.post<CreateTDLResponseType>(`todo-lists`, {tdl}).then(response => response.data)
+    createTDL(title: string) {
+        return instance.post<CreateTDLResponseType>(`todo-lists`, {title}).then(response => response.data)
     },
     deleteTDL(tdlID: string) {
         return instance.delete<ResponseType>(`todo-lists/${tdlID}`).then(response => response.data)
