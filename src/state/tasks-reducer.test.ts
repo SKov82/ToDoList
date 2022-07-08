@@ -129,15 +129,15 @@ test('change task title', () => {
 test('change task status', () => {
     const endState = tasksReducer(
         tasksReducer(startState, changeStatusAC(tdlId2, startState[tdlId2][1].id)),
-        changeStatusAC(tdlId1, startState[tdlId1][3].id)
+        changeStatusAC(tdlId1, startState[tdlId1][2].id)
     )
 
     expect(endState[tdlId1].length).toBe(startState[tdlId1].length)
     expect(endState[tdlId2].length).toBe(startState[tdlId2].length)
-    expect(endState[tdlId1][3].title).toBe(startState[tdlId1][3].title)
-    expect(endState[tdlId1][3].id).toBe(startState[tdlId1][3].id)
-    expect(endState[tdlId1][3].completed).toBe(!startState[tdlId1][3].completed)
-    expect(endState[tdlId1][3].completed).toBeTruthy()
+    expect(endState[tdlId1][2].title).toBe(startState[tdlId1][2].title)
+    expect(endState[tdlId1][2].id).toBe(startState[tdlId1][2].id)
+    expect(endState[tdlId1][2].completed).toBe(!startState[tdlId1][2].completed)
+    expect(endState[tdlId1][2].completed).toBeTruthy()
     expect(endState[tdlId2][1].title).toBe(startState[tdlId2][1].title)
     expect(endState[tdlId2][1].id).toBe(startState[tdlId2][1].id)
     expect(endState[tdlId2][1].completed).toBe(!startState[tdlId2][1].completed)
