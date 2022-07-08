@@ -28,6 +28,8 @@ export const todolistReducer = (state: Array<TDLType> = tdlInitialState, action:
             return state.map(tl => tl.id === action.payload.toDoListId ? {...tl, title: action.payload.title} : tl)
         case 'CHANGE-FILTER':
             return state.map(tl => tl.id === action.payload.toDoListId ? {...tl, filter: action.payload.filter} : tl)
+        case 'SET-TODOLISTS':
+            return action.payload.toDoLists.map(tdl => ( {...tdl, filter: 'all'} ))
         default:
             return state
     }
@@ -37,11 +39,14 @@ type ActionType = removeTDListACType
     | addTDListACType
     | changeTDLTitleACType
     | changeFilterACType
+    | SetTDLType
 
 type removeTDListACType = ReturnType<typeof removeTDListAC>
 type addTDListACType = ReturnType<typeof addTDListAC>
 type changeTDLTitleACType = ReturnType<typeof changeTDLTitleAC>
 type changeFilterACType = ReturnType<typeof changeFilterAC>
+
+type SetTDLType = ReturnType<typeof SetTDL>
 
 export const removeTDListAC = (toDoListId: string) => {
     return { type: 'REMOVE-TODOLIST', payload: {toDoListId} } as const
@@ -54,4 +59,8 @@ export const changeTDLTitleAC = (toDoListId: string, title: string) => {
 }
 export const changeFilterAC = (toDoListId: string, filter: FilterType) => {
     return { type: 'CHANGE-FILTER', payload: {toDoListId, filter} } as const
+}
+
+export const SetTDL = (toDoLists: Array<TodoListType>) => {
+    return { type: 'SET-TODOLISTS', payload: {toDoLists} } as const
 }
