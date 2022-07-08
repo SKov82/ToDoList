@@ -19,12 +19,23 @@ type ResponseType<D = {}> = {
 }
 type CreateTDLResponseType = ResponseType<{item: TodoListType}>
 
+export enum TaskStatus {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3,
+}
+export enum TaskPriority {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+}
 export type TaskType = {
     description: string
     title: string
     completed: boolean
-    status: number
-    priority: number
+    status: TaskStatus
+    priority: TaskPriority
     startDate: string
     deadline: string
     id: string

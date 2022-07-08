@@ -1,9 +1,10 @@
 import React, {useCallback} from 'react';
-import {FilterType} from '../App'
+import {FilterType} from '../state/todolist-reducer'
 import {AddItem} from './AddItem';
 import {EditableSpan} from './EditableSpan';
 import {Button, ButtonGroup, Grid, List, Paper, Typography} from '@mui/material';
 import {Task} from './Task';
+import {TaskType} from '../api/api';
 
 type ToDoListType = {
     id: string
@@ -17,12 +18,6 @@ type ToDoListType = {
     filter: FilterType
     removeList: (toDoListId: string) => void
     changeToDoListTitle: (toDoListId: string, newTitle: string) => void
-}
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
 }
 
 export const ToDoList = React.memo( (props: ToDoListType) => {
@@ -39,8 +34,8 @@ export const ToDoList = React.memo( (props: ToDoListType) => {
     }, [props.removeList, props.id])
 
     let filteredTasks = props.tasks
-    if (props.filter === 'active') filteredTasks = props.tasks.filter(task => !task.isDone)
-    if (props.filter === 'done') filteredTasks = props.tasks.filter(task => task.isDone)
+    if (props.filter === 'active') filteredTasks = props.tasks.filter(task => !task.completed)
+    if (props.filter === 'done') filteredTasks = props.tasks.filter(task => task.completed)
 
     return (
         <Grid item sm={6} md={4} lg={3}>

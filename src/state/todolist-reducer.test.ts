@@ -1,13 +1,12 @@
 import {v1} from 'uuid';
-import {ToDoListType} from '../App';
 import {
-    addTDListAC, changeFilterAC, changeTDLTitleAC, removeTDListAC, todolistReducer
+    addTDListAC, changeFilterAC, changeTDLTitleAC, removeTDListAC, TDLType, todolistReducer
 } from './todolist-reducer';
 
-const startState: ToDoListType[] = [
-    {id: v1(), title: 'What to learn ', filter: 'all'},
-    {id: v1(), title: 'What to buy ', filter: 'active'},
-    {id: v1(), title: 'Films to watch ', filter: 'done'},
+const startState: TDLType[] = [
+    {id: v1(), title: 'What to learn ', addedDate: '', order: 0, filter: 'all'},
+    {id: v1(), title: 'What to buy ', addedDate: '', order: 1, filter: 'active'},
+    {id: v1(), title: 'Films to watch ', addedDate: '', order: 2, filter: 'done'},
 ]
 
 test('remove todolist', () => {
