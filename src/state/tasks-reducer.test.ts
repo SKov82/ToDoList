@@ -2,7 +2,7 @@ import {v1} from 'uuid';
 import {TaskPriority, TaskStatus} from '../api/api';
 import {
     addTaskAC, addTasksArrayAC, changeStatusAC, changeTaskTitleAC,
-    removeTaskAC, removeTasksArrayAC, TasksListType, tasksReducer
+    removeTaskAC, removeTasksArrayAC, SetTDL, TasksListType, tasksReducer
 } from './tasks-reducer';
 
 const [tdlId1, tdlId2] = [v1(), v1()]
@@ -162,4 +162,42 @@ test('delete array of tasks for removed ToDoList', () => {
 
     expect(Object.keys(endState).length).toBe(Object.keys(startState).length - 1)
     expect(endState[tdlId1]).toBeUndefined()
+})
+
+test('set tasks to the state', () => {
+    const action = SetTDL([
+        {
+            id: v1(),
+            title: "Vue",
+            status: TaskStatus.InProgress,
+            todoListId: tdlId1,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Middle,
+            completed: false,
+            description: ''
+        },
+        {
+            id: v1(),
+            title: "Django",
+            status: TaskStatus.Completed,
+            todoListId: tdlId2,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Middle,
+            completed: true,
+            description: ''
+        },
+    ])
+    const endState = tasksReducer(startState, action)
+
+    expect(Object.keys(endState).length).toBe(2)
+    expect(endState[tdlId1].length).toBe(1)
+    expect(endState[tdlId2].length).toBe(1)
+    expect(endState[tdlId1][0].title).toBe('Vue')
+    expect(endState[tdlId2][0].title).toBe('Django')
 })
