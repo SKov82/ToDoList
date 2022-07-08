@@ -1,22 +1,93 @@
 import {v1} from 'uuid';
-import {TasksListType} from '../App';
+import {TaskPriority, TaskStatus} from '../api/api';
 import {
     addTaskAC, addTasksArrayAC, changeStatusAC, changeTaskTitleAC,
-    removeTaskAC, removeTasksArrayAC, tasksReducer
+    removeTaskAC, removeTasksArrayAC, TasksListType, tasksReducer
 } from './tasks-reducer';
 
 const [tdlId1, tdlId2] = [v1(), v1()]
 const startState: TasksListType = {
     [tdlId1]: [
-        {id: v1(), title: "HTML/CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "TS", isDone: false},
-        {id: v1(), title: "React", isDone: false},
+        {
+            id: v1(),
+            title: "HTML/CSS",
+            status: TaskStatus.Completed,
+            todoListId: tdlId1,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Middle,
+            completed: true,
+            description: ''
+        },
+        {
+            id: v1(),
+            title: "JS/TS",
+            status: TaskStatus.Completed,
+            todoListId: tdlId1,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Middle,
+            completed: true,
+            description: ''
+        },
+        {
+            id: v1(),
+            title: "React",
+            status: TaskStatus.InProgress,
+            todoListId: tdlId1,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Middle,
+            completed: false,
+            description: ''
+        },
     ],
     [tdlId2]: [
-        {id: v1(), title: "Хлеб", isDone: true},
-        {id: v1(), title: "Молоко", isDone: true},
-        {id: v1(), title: "Сок", isDone: false},
+        {
+            id: v1(),
+            title: "Хлеб",
+            status: TaskStatus.Completed,
+            todoListId: tdlId2,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Middle,
+            completed: true,
+            description: ''
+        },
+        {
+            id: v1(),
+            title: "Молоко",
+            status: TaskStatus.Completed,
+            todoListId: tdlId2,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Middle,
+            completed: true,
+            description: ''
+        },
+        {
+            id: v1(),
+            title: "Сок",
+            status: TaskStatus.InProgress,
+            todoListId: tdlId2,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Middle,
+            completed: false,
+            description: ''
+        },
     ]
 }
 
@@ -39,7 +110,7 @@ test('add task', () => {
     expect(endState[tdlId2].length).toBe(startState[tdlId2].length)
     expect(endState[tdlId1][0].id).toBeDefined()
     expect(endState[tdlId1][0].title).toBe('NewTask')
-    expect(endState[tdlId1][0].isDone).toBe(false)
+    expect(endState[tdlId1][0].completed).toBe(false)
 })
 
 test('change task title', () => {
@@ -52,7 +123,7 @@ test('change task title', () => {
     expect(endState[tdlId1][0].title).toBe('NewTitle')
     expect(endState[tdlId2][0].title).toBe(startState[tdlId2][0].title)
     expect(endState[tdlId1][0].id).toBe(startState[tdlId1][0].id)
-    expect(endState[tdlId1][0].isDone).toBe(startState[tdlId1][0].isDone)
+    expect(endState[tdlId1][0].completed).toBe(startState[tdlId1][0].completed)
 })
 
 test('change task status', () => {
@@ -65,12 +136,12 @@ test('change task status', () => {
     expect(endState[tdlId2].length).toBe(startState[tdlId2].length)
     expect(endState[tdlId1][3].title).toBe(startState[tdlId1][3].title)
     expect(endState[tdlId1][3].id).toBe(startState[tdlId1][3].id)
-    expect(endState[tdlId1][3].isDone).toBe(!startState[tdlId1][3].isDone)
-    expect(endState[tdlId1][3].isDone).toBeTruthy()
+    expect(endState[tdlId1][3].completed).toBe(!startState[tdlId1][3].completed)
+    expect(endState[tdlId1][3].completed).toBeTruthy()
     expect(endState[tdlId2][1].title).toBe(startState[tdlId2][1].title)
     expect(endState[tdlId2][1].id).toBe(startState[tdlId2][1].id)
-    expect(endState[tdlId2][1].isDone).toBe(!startState[tdlId2][1].isDone)
-    expect(endState[tdlId2][1].isDone).toBeFalsy()
+    expect(endState[tdlId2][1].completed).toBe(!startState[tdlId2][1].completed)
+    expect(endState[tdlId2][1].completed).toBeFalsy()
 })
 
 test('add empty array of tasks for new ToDoList', () => {

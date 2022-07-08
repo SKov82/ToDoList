@@ -1,3 +1,4 @@
+/*
 import React, {useReducer} from 'react';
 import './App.css';
 import {TaskType, ToDoList} from "./components/ToDoList";
@@ -143,3 +144,5 @@ function App() {
 }
 
 export default App;
+*/
+export {}

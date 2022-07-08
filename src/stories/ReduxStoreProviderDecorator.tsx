@@ -2,9 +2,10 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import {AppStateType} from '../state/store';
 import {combineReducers, createStore} from 'redux';
-import {todolistReducer} from '../state/todolist-reducer';
+import {tdlInitialState, todolistReducer} from '../state/todolist-reducer';
 import {tasksReducer} from '../state/tasks-reducer';
 import {v1} from 'uuid';
+import {TaskPriority, TaskStatus} from '../api/api';
 
 const rootReducer = combineReducers({
     todolists: todolistReducer,
@@ -13,21 +14,65 @@ const rootReducer = combineReducers({
 
 const initialState = {
     todolists: [
-        {id: 'tdl1', title: 'What to learn ', filter: 'all'},
-        {id: 'tdl2', title: 'Films to watch ', filter: 'done'},
+        {id: v1(), title: 'What to learn ', addedDate: '', order: 0, filter: 'all'},
+        {id: v1(), title: 'Films to watch ', addedDate: '', order: 2, filter: 'done'},
     ],
     tasks: {
         ['tdl1']: [
-            {id: v1(), title: "HTML/CSS", isDone: true},
-            {id: v1(), title: "JS / TS", isDone: true},
-            {id: v1(), title: "React", isDone: false},
-            {id: v1(), title: "Python", isDone: true},
-            {id: v1(), title: "Django", isDone: false},
+            {
+                id: v1(),
+                title: "JS/TS",
+                status: TaskStatus.Completed,
+                todoListId: tdlInitialState[0]?.id,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                order: 0,
+                priority: TaskPriority.Middle,
+                completed: true,
+                description: ''
+            },
+            {
+                id: v1(),
+                title: "React",
+                status: TaskStatus.InProgress,
+                todoListId: tdlInitialState[0]?.id,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                order: 0,
+                priority: TaskPriority.Middle,
+                completed: false,
+                description: ''
+            },
         ],
         ['tdl2']: [
-            {id: v1(), title: "Дориан Грей", isDone: true},
-            {id: v1(), title: "Зеленая миля", isDone: false},
-            {id: v1(), title: "Знакомьтесь, Джо Блэк", isDone: true},
+            {
+                id: v1(),
+                title: "Дориан Грей",
+                status: TaskStatus.Completed,
+                todoListId: tdlInitialState[2]?.id,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                order: 0,
+                priority: TaskPriority.Middle,
+                completed: true,
+                description: ''
+            },
+            {
+                id: v1(),
+                title: "Зеленая миля",
+                status: TaskStatus.Completed,
+                todoListId: tdlInitialState[2]?.id,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                order: 0,
+                priority: TaskPriority.Middle,
+                completed: true,
+                description: ''
+            },
         ],
     }
 }

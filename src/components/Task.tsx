@@ -1,7 +1,7 @@
 import {Checkbox, ListItem} from '@mui/material';
 import {EditableSpan} from './EditableSpan';
 import React, {useCallback} from 'react';
-import {TaskType} from './ToDoList';
+import { TaskType } from '../api/api';
 
 type TaskPropsType = {
     todolistID: string
@@ -21,11 +21,11 @@ export const Task = React.memo((props: TaskPropsType) => {
     }, [props.removeTask, props.todolistID, props.task.id])
 
     return (
-        <ListItem className={`${props.task.isDone ? 'is-done' : ''} ${'listItem'}`}
+        <ListItem className={`${props.task.completed ? 'is-done' : ''} ${'listItem'}`}
                   divider={true}
                   sx={{padding: '5px'}}
         >
-            <Checkbox checked={props.task.isDone}
+            <Checkbox checked={props.task.completed}
                       onChange={() => props.changeStatus(props.todolistID, props.task.id)}
                       size={'small'}
             />
