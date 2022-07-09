@@ -1,5 +1,4 @@
-import {v1} from 'uuid';
-import {API, TaskPriority, TaskStatus, TaskType} from '../api/api';
+import {API, TaskType} from '../api/api';
 import {Dispatch} from 'redux';
 
 export type TasksListType = {
@@ -15,30 +14,8 @@ export const tasksReducer = (state: TasksListType = initialState, action: Action
                 state[action.payload.toDoListId].filter(t => t.id !== action.payload.taskId)
             }
         case 'ADD-TASK':
-            // addedDate: "2022-07-09T16:54:21.0306531Z"
-            // deadline: null
-            // description: null
-            // id: "864a14ce-7388-4da7-bef3-4a41c579f00e"
-            // order: 0
-            // priority: 1
-            // startDate: null
-            // status: 0
-            // title: "new task"
-            // todoListId: "b86c17eb-5a26-439f-b829-31a6c8e5bea6"
-            return {...state, [action.payload.toDoListId]:
-                [{
-                    id: v1(),
-                    title: action.payload.title,
-                    status: TaskStatus.InProgress,
-                    todoListId: action.payload.toDoListId,
-                    startDate: '',
-                    deadline: '',
-                    addedDate: '',
-                    order: 0,
-                    priority: TaskPriority.Middle,
-                    completed: false,
-                    description: ''
-                }, ...state[action.payload.toDoListId] ]
+            return {...state, [action.payload.task.todoListId]:
+                [ {...action.payload.task}, ...state[action.payload.task.todoListId] ]
             }
         case 'CHANGE-TASK-TITLE':
             return {...state, [action.payload.toDoListId]: state[action.payload.toDoListId].map(
@@ -80,8 +57,8 @@ type SetTasksType = ReturnType<typeof SetTasks>
 export const removeTaskAC = (toDoListId: string, taskId: string) => {
     return { type: 'REMOVE-TASK', payload: {toDoListId, taskId} } as const
 }
-export const addTaskAC = (toDoListId: string, title: string) => {
-    return { type: 'ADD-TASK', payload: {toDoListId, title} } as const
+export const addTaskAC = (task: TaskType) => {
+    return { type: 'ADD-TASK', payload: {task} } as const
 }
 export const changeTaskTitleAC = (toDoListId: string, taskId: string, title: string) => {
     return { type: 'CHANGE-TASK-TITLE', payload: {toDoListId, taskId, title} } as const
@@ -103,7 +80,7 @@ export const addTaskTC = (toDoListId: string, title: string): any => {
     return (dispatch: Dispatch) => {
         API.createTask(toDoListId, title).then(data => {
             if (!data.resultCode) {
-                dispatch(addTaskAC(toDoListId, title))
+                dispatch(addTaskAC(data.data.item))
             }
         })
     }

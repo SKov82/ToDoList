@@ -104,7 +104,21 @@ test('remove task', () => {
 })
 
 test('add task', () => {
-    const endState = tasksReducer(startState, addTaskAC(tdlId1, 'NewTask'))
+    const endState = tasksReducer(startState, addTaskAC(
+        {
+            id: v1(),
+            title: 'NewTask',
+            status: TaskStatus.InProgress,
+            todoListId: tdlId1,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Middle,
+            completed: false,
+            description: ''
+        }
+    ))
 
     expect(endState[tdlId1].length).toBe(startState[tdlId1].length + 1)
     expect(endState[tdlId2].length).toBe(startState[tdlId2].length)

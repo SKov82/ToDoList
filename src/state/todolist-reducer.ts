@@ -14,9 +14,7 @@ export const todolistReducer = (state: Array<TDLType> = tdlInitialState, action:
         case 'REMOVE-TODOLIST':
             return state.filter(tl => tl.id !== action.payload.toDoListId)
         case 'ADD-TODOLIST':
-            return [{...action.payload.toDoList,
-                filter: 'all'
-            }, ...state]
+            return [{...action.payload.toDoList, filter: 'all'}, ...state]
         case 'CHANGE-TDL-TITLE':
             return state.map(tl => tl.id === action.payload.toDoListId ? {...tl, title: action.payload.title} : tl)
         case 'CHANGE-FILTER':
