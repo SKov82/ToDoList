@@ -103,17 +103,9 @@ export const changeTaskTC = (
     return (dispatch: Dispatch, getState: () => AppStateType) => {
         const task = getState().tasks[toDoListId].filter(t => t.id === taskId)[0]
         const newTask = {
-            description: task.description,
+            ...task,
             title: title || task.title,
-            completed: task.completed,
             status: status || task.status,
-            priority: task.priority,
-            startDate: task.startDate,
-            deadline: task.deadline,
-            id: task.id,
-            todoListId: task.todoListId,
-            order: task.order,
-            addedDate: task.addedDate
         }
         API.updateTask(toDoListId, taskId, newTask).then(data => {
             if (!data.resultCode) {
