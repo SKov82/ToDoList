@@ -10,7 +10,7 @@ import {
     removeTaskAC, removeTasksArrayAC, TasksListType
 } from './state/tasks-reducer';
 import {
-    addTDListAC, changeFilterAC, changeTDLTitleAC, fetchTDLThunk, FilterType, removeTDListAC, TDLType
+    addTDListAC, changeFilterAC, changeTDLTitleAC, fetchTDL, FilterType, removeTDListAC, TDLType
 } from './state/todolist-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from './state/store';
@@ -22,7 +22,7 @@ function AppWithRedux() {
     const tasks = useSelector<AppStateType, TasksListType>( state => state.tasks )
 
     useEffect(() => {
-        fetchTDLThunk(dispatch)
+        dispatch(fetchTDL())
     }, [])
 
     const removeTask = useCallback((toDoListId: string, taskId: string) => {

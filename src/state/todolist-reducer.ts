@@ -65,15 +65,17 @@ export const SetTDL = (toDoLists: Array<TodoListType>) => {
     return { type: 'SET-TODOLISTS', payload: {toDoLists} } as const
 }
 
-export const fetchTDLThunk = (dispatch: Dispatch) => {
-    API.getTDL().then(data => {
-        data.forEach(tdl => {
-            dispatch(addTasksArrayAC(tdl.id))
-            API.getTasks(tdl.id)
-                .then(data => {
-                    dispatch(SetTasks(tdl.id, data.items))
-                })
+export const fetchTDL = (): any => {
+    return (dispatch: Dispatch) => {
+        API.getTDL().then(data => {
+            data.forEach(tdl => {
+                dispatch(addTasksArrayAC(tdl.id))
+                API.getTasks(tdl.id)
+                    .then(data => {
+                        dispatch(SetTasks(tdl.id, data.items))
+                    })
+            })
+            dispatch(SetTDL(data))
         })
-        dispatch(SetTDL(data))
-    })
+    }
 }
