@@ -91,3 +91,12 @@ export const removeTDL = (toDoListId: string): any => {
         })
     }
 }
+export const changeTDLTitle = (toDoListId: string, title: string): any => {
+    return (dispatch: Dispatch) => {
+        API.updateTDL(toDoListId, title).then(data => {
+            if (!data.resultCode) {
+                dispatch(changeTDLTitleAC(toDoListId, title))
+            }
+        })
+    }
+}

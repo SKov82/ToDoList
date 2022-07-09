@@ -1,21 +1,17 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {ToDoList} from "./components/ToDoList";
-import {v1} from 'uuid';
 import {AddItem} from './components/AddItem';
 import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
-    addTaskAC, addTasksArrayAC, changeStatusAC, changeTaskTitleAC,
-    removeTaskAC, removeTasksArrayAC, TasksListType
+    addTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC, TasksListType
 } from './state/tasks-reducer';
 import {
-    addTDL,
-    addTDListAC, changeFilterAC, changeTDLTitleAC, fetchTDL, FilterType, removeTDL, removeTDListAC, TDLType
+    addTDL, changeFilterAC, changeTDLTitle, fetchTDL, FilterType, removeTDL, TDLType
 } from './state/todolist-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from './state/store';
-import {API} from './api/api';
 
 function AppWithRedux() {
     const dispatch = useDispatch()
@@ -46,7 +42,7 @@ function AppWithRedux() {
         dispatch(addTDL(title))
     }, [dispatch])
     const changeToDoListTitle = useCallback((toDoListId: string, newTitle: string) => {
-        dispatch(changeTDLTitleAC(toDoListId, newTitle))
+        dispatch(changeTDLTitle(toDoListId, newTitle))
     }, [dispatch])
     const changeFilter = useCallback((toDoListId: string, filter: FilterType) => {
         dispatch(changeFilterAC(toDoListId, filter))
