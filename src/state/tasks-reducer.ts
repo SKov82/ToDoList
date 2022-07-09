@@ -15,6 +15,16 @@ export const tasksReducer = (state: TasksListType = initialState, action: Action
                 state[action.payload.toDoListId].filter(t => t.id !== action.payload.taskId)
             }
         case 'ADD-TASK':
+            // addedDate: "2022-07-09T16:54:21.0306531Z"
+            // deadline: null
+            // description: null
+            // id: "864a14ce-7388-4da7-bef3-4a41c579f00e"
+            // order: 0
+            // priority: 1
+            // startDate: null
+            // status: 0
+            // title: "new task"
+            // todoListId: "b86c17eb-5a26-439f-b829-31a6c8e5bea6"
             return {...state, [action.payload.toDoListId]:
                 [{
                     id: v1(),
@@ -94,6 +104,15 @@ export const addTaskTC = (toDoListId: string, title: string): any => {
         API.createTask(toDoListId, title).then(data => {
             if (!data.resultCode) {
                 dispatch(addTaskAC(toDoListId, title))
+            }
+        })
+    }
+}
+export const removeTaskTC = (toDoListId: string, taskId: string): any => {
+    return (dispatch: Dispatch) => {
+        API.deleteTask(toDoListId, taskId).then(data => {
+            if (!data.resultCode) {
+                dispatch(removeTaskAC(toDoListId, taskId))
             }
         })
     }
