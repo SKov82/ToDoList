@@ -14,11 +14,7 @@ export const todolistReducer = (state: Array<TDLType> = tdlInitialState, action:
         case 'REMOVE-TODOLIST':
             return state.filter(tl => tl.id !== action.payload.toDoListId)
         case 'ADD-TODOLIST':
-            return [{
-                id: action.payload.toDoListId,
-                title: action.payload.title,
-                addedDate: '',
-                order: state.length,
+            return [{...action.payload.toDoList,
                 filter: 'all'
             }, ...state]
         case 'CHANGE-TDL-TITLE':
@@ -47,8 +43,8 @@ type SetTDLType = ReturnType<typeof SetTDL>
 export const removeTDListAC = (toDoListId: string) => {
     return { type: 'REMOVE-TODOLIST', payload: {toDoListId} } as const
 }
-export const addTDListAC = (toDoListId: string, title: string) => {
-    return { type: 'ADD-TODOLIST', payload: {toDoListId, title} } as const
+export const addTDListAC = (toDoList: TodoListType) => {
+    return { type: 'ADD-TODOLIST', payload: {toDoList} } as const
 }
 export const changeTDLTitleAC = (toDoListId: string, title: string) => {
     return { type: 'CHANGE-TDL-TITLE', payload: {toDoListId, title} } as const
@@ -76,7 +72,7 @@ export const addTDL = (title: string): any => {
         API.createTDL(title).then(data => {
             if (!data.resultCode) {
                 dispatch(addTasksArrayAC(data.data.item.id))
-                dispatch(addTDListAC(data.data.item.id, title))
+                dispatch(addTDListAC(data.data.item))
             }
         })
     }

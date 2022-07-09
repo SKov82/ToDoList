@@ -17,7 +17,9 @@ test('remove todolist', () => {
 })
 
 test('add todolist', () => {
-    const endState = todolistReducer(startState, addTDListAC(v1(), 'NewTodoList'))
+    const endState = todolistReducer(startState, addTDListAC(
+        {id: v1(), title: 'NewTodoList', addedDate: '', order: 0}
+    ))
 
     expect(endState.length).toBe(startState.length + 1)
     expect(endState[1].id).toBe(startState[0].id)
