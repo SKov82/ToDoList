@@ -1,5 +1,6 @@
-import {API, TaskType} from '../api/api';
+import {API, TaskStatus, TaskType} from '../api/api';
 import {Dispatch} from 'redux';
+import {AppStateType} from './store';
 
 export type TasksListType = {
     [key: string]: Array<TaskType>
@@ -15,7 +16,7 @@ export const tasksReducer = (state: TasksListType = initialState, action: Action
             }
         case 'ADD-TASK':
             return {...state, [action.payload.task.todoListId]:
-                [ {...action.payload.task}, ...state[action.payload.task.todoListId] ]
+                [ {...action.payload.task, completed: false}, ...state[action.payload.task.todoListId] ]
             }
         case 'CHANGE-TASK-TITLE':
             return {...state, [action.payload.toDoListId]: state[action.payload.toDoListId].map(
@@ -32,7 +33,9 @@ export const tasksReducer = (state: TasksListType = initialState, action: Action
             delete newState[action.payload.toDoListId]
             return newState
         case 'SET-TASKS':
-            return {...state, [action.payload.toDoListId]: action.payload.tasks}
+            return {...state,
+                [action.payload.toDoListId]: action.payload.tasks.map(t => ({...t, completed: false}))
+            }
         default:
             return state
     }
@@ -90,6 +93,32 @@ export const removeTaskTC = (toDoListId: string, taskId: string): any => {
         API.deleteTask(toDoListId, taskId).then(data => {
             if (!data.resultCode) {
                 dispatch(removeTaskAC(toDoListId, taskId))
+            }
+        })
+    }
+}
+export const changeTaskTC = (
+    toDoListId: string, taskId: string, status: TaskStatus | null = null, title: string | null = null
+): any => {
+    return (dispatch: Dispatch, getState: () => AppStateType) => {
+        const task = getState().tasks[toDoListId].filter(t => t.id === taskId)[0]
+        const newTask = {
+            description: task.description,
+            title: title || task.title,
+            completed: task.completed,
+            status: status || task.status,
+            priority: task.priority,
+            startDate: task.startDate,
+            deadline: task.deadline,
+            id: task.id,
+            todoListId: task.todoListId,
+            order: task.order,
+            addedDate: task.addedDate
+        }
+        API.updateTask(toDoListId, taskId, newTask).then(data => {
+            if (!data.resultCode) {
+                if (status) dispatch(changeStatusAC(toDoListId, taskId))
+                if (title) dispatch(changeTaskTitleAC(toDoListId, taskId, title))
             }
         })
     }

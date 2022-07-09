@@ -5,7 +5,7 @@ import {AddItem} from './components/AddItem';
 import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
-    addTaskTC, changeStatusAC, changeTaskTitleAC, removeTaskTC, TasksListType
+    addTaskTC, changeTaskTC, removeTaskTC, TasksListType
 } from './state/tasks-reducer';
 import {
     addTDL, changeFilterAC, changeTDLTitle, fetchTDL, FilterType, removeTDL, TDLType
@@ -29,10 +29,10 @@ function AppWithRedux() {
         if (toDoListId && title) dispatch(addTaskTC(toDoListId, title))
     }, [dispatch])
     const changeStatus = useCallback((toDoListId: string, taskId: string) => {
-        dispatch(changeStatusAC(toDoListId, taskId))
+        dispatch(changeTaskTC(toDoListId, taskId))
     }, [dispatch])
-    const changeTaskTitle = useCallback((toDoListId: string, taskId: string, newTitle: string) => {
-        dispatch(changeTaskTitleAC(toDoListId, taskId, newTitle))
+    const changeTaskTitle = useCallback((toDoListId: string, taskId: string, title: string) => {
+        dispatch(changeTaskTC(toDoListId, taskId, null, title))
     }, [dispatch])
 
     const removeList = useCallback((toDoListId: string) => {
