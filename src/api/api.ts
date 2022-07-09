@@ -73,8 +73,8 @@ export const API = {
     getTasks(tdlID: string) {
         return instance.get<GetTasksResponseType>(`todo-lists/${tdlID}/tasks`).then(response => response.data)
     },
-    createTask(tdlID: string, taskTitle: string) {
-        return instance.post<CrUpdTaskResponseType>(`todo-lists/${tdlID}/tasks`, {taskTitle}).then(response => response.data)
+    createTask(tdlID: string, title: string) {
+        return instance.post<CrUpdTaskResponseType>(`todo-lists/${tdlID}/tasks`, {title}).then(response => response.data)
     },
     deleteTask(tdlID: string, taskID: string) {
         return instance.delete<ResponseType>(`todo-lists/${tdlID}/tasks/${taskID}`).then(response => response.data)

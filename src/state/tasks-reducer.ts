@@ -1,5 +1,6 @@
 import {v1} from 'uuid';
-import {TaskPriority, TaskStatus, TaskType} from '../api/api';
+import {API, TaskPriority, TaskStatus, TaskType} from '../api/api';
+import {Dispatch} from 'redux';
 
 export type TasksListType = {
     [key: string]: Array<TaskType>
@@ -86,4 +87,14 @@ export const removeTasksArrayAC = (toDoListId: string) => {
 }
 export const SetTasks = (toDoListId: string, tasks: Array<TaskType>) => {
     return { type: 'SET-TASKS', payload: {toDoListId, tasks} } as const
+}
+
+export const addTaskTC = (toDoListId: string, title: string): any => {
+    return (dispatch: Dispatch) => {
+        API.createTask(toDoListId, title).then(data => {
+            if (!data.resultCode) {
+                dispatch(addTaskAC(toDoListId, title))
+            }
+        })
+    }
 }
