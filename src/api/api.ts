@@ -1,11 +1,5 @@
 import axios from 'axios';
 
-const instance = axios.create({
-    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
-    withCredentials: true,
-    headers: {'API-KEY': '97e468f6-5b68-452f-8b2e-b1ab07a6dd98'},
-})
-
 export type TodoListType = {
     id: string
     title: string
@@ -56,7 +50,14 @@ type CrUpdTaskResponseType = {
     messages: Array<string>
 }
 
+const instance = axios.create({
+    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+    withCredentials: true,
+    headers: {'API-KEY': '97e468f6-5b68-452f-8b2e-b1ab07a6dd98'},
+})
+
 export const API = {
+    // todolist
     getTDL() {
         return instance.get<Array<TodoListType>>(`todo-lists`).then(response => response.data)
     },
@@ -69,7 +70,7 @@ export const API = {
     updateTDL(tdlID: string, title: string) {
         return instance.put<ResponseType>(`todo-lists/${tdlID}`, {title}).then(response => response.data)
     },
-
+    // tasks
     getTasks(tdlID: string) {
         return instance.get<GetTasksResponseType>(`todo-lists/${tdlID}/tasks`).then(response => response.data)
     },

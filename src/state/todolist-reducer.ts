@@ -26,17 +26,11 @@ export const todolistReducer = (state: Array<TDLType> = tdlInitialState, action:
     }
 }
 
-type ActionType = removeTDListACType
-    | addTDListACType
-    | changeTDLTitleACType
-    | changeFilterACType
-    | SetTDLType
-
-type removeTDListACType = ReturnType<typeof removeTDListAC>
-type addTDListACType = ReturnType<typeof addTDListAC>
-type changeTDLTitleACType = ReturnType<typeof changeTDLTitleAC>
-type changeFilterACType = ReturnType<typeof changeFilterAC>
-type SetTDLType = ReturnType<typeof SetTDL>
+type ActionType = ReturnType<typeof removeTDListAC>
+    | ReturnType<typeof addTDListAC>
+    | ReturnType<typeof changeTDLTitleAC>
+    | ReturnType<typeof changeFilterAC>
+    | ReturnType<typeof SetTDL>
 
 export const removeTDListAC = (toDoListId: string) => {
     return { type: 'REMOVE-TODOLIST', payload: {toDoListId} } as const
