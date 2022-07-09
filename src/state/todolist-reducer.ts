@@ -1,5 +1,7 @@
-import {TodoListType} from '../api/api';
+import {API, TodoListType} from '../api/api';
 import {v1} from 'uuid';
+import {Dispatch} from 'redux';
+import {addTasksArrayAC, SetTasks} from './tasks-reducer';
 
 export type FilterType = 'all' | 'active' | 'done'
 export type TDLType = TodoListType & {
@@ -45,7 +47,6 @@ type removeTDListACType = ReturnType<typeof removeTDListAC>
 type addTDListACType = ReturnType<typeof addTDListAC>
 type changeTDLTitleACType = ReturnType<typeof changeTDLTitleAC>
 type changeFilterACType = ReturnType<typeof changeFilterAC>
-
 type SetTDLType = ReturnType<typeof SetTDL>
 
 export const removeTDListAC = (toDoListId: string) => {
@@ -60,7 +61,19 @@ export const changeTDLTitleAC = (toDoListId: string, title: string) => {
 export const changeFilterAC = (toDoListId: string, filter: FilterType) => {
     return { type: 'CHANGE-FILTER', payload: {toDoListId, filter} } as const
 }
-
 export const SetTDL = (toDoLists: Array<TodoListType>) => {
     return { type: 'SET-TODOLISTS', payload: {toDoLists} } as const
+}
+
+export const fetchTDLThunk = (dispatch: Dispatch) => {
+    API.getTDL().then(data => {
+        data.forEach(tdl => {
+            dispatch(addTasksArrayAC(tdl.id))
+            API.getTasks(tdl.id)
+                .then(data => {
+                    dispatch(SetTasks(tdl.id, data.items))
+                })
+        })
+        dispatch(SetTDL(data))
+    })
 }
