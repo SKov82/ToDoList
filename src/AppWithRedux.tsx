@@ -7,10 +7,10 @@ import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from '
 import MenuIcon from '@mui/icons-material/Menu';
 import {
     addTaskAC, addTasksArrayAC, changeStatusAC, changeTaskTitleAC,
-    removeTaskAC, removeTasksArrayAC, SetTasks, TasksListType
+    removeTaskAC, removeTasksArrayAC, TasksListType
 } from './state/tasks-reducer';
 import {
-    addTDListAC, changeFilterAC, changeTDLTitleAC, fetchTDLThunk, FilterType, removeTDListAC, SetTDL, TDLType
+    addTDListAC, changeFilterAC, changeTDLTitleAC, fetchTDLThunk, FilterType, removeTDListAC, TDLType
 } from './state/todolist-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from './state/store';
