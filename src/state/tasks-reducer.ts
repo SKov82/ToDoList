@@ -1,110 +1,11 @@
 import {v1} from 'uuid';
-import {tdlInitialState} from './todolist-reducer';
 import {TaskPriority, TaskStatus, TaskType} from '../api/api';
 
 export type TasksListType = {
     [key: string]: Array<TaskType>
 }
 
-const initialState: TasksListType = {
-    [tdlInitialState[0]?.id]: [
-        {
-            id: v1(),
-            title: "JS/TS",
-            status: TaskStatus.Completed,
-            todoListId: tdlInitialState[0]?.id,
-            startDate: '',
-            deadline: '',
-            addedDate: '',
-            order: 0,
-            priority: TaskPriority.Middle,
-            completed: true,
-            description: ''
-        },
-        {
-            id: v1(),
-            title: "React",
-            status: TaskStatus.InProgress,
-            todoListId: tdlInitialState[0]?.id,
-            startDate: '',
-            deadline: '',
-            addedDate: '',
-            order: 0,
-            priority: TaskPriority.Middle,
-            completed: false,
-            description: ''
-        },
-        {
-            id: v1(),
-            title: "Python",
-            status: TaskStatus.Completed,
-            todoListId: tdlInitialState[0]?.id,
-            startDate: '',
-            deadline: '',
-            addedDate: '',
-            order: 0,
-            priority: TaskPriority.Middle,
-            completed: true,
-            description: ''
-        },
-    ],
-    [tdlInitialState[1]?.id]: [
-        {
-            id: v1(),
-            title: "Хлеб",
-            status: TaskStatus.Completed,
-            todoListId: tdlInitialState[1]?.id,
-            startDate: '',
-            deadline: '',
-            addedDate: '',
-            order: 0,
-            priority: TaskPriority.Middle,
-            completed: true,
-            description: ''
-        },
-        {
-            id: v1(),
-            title: "Молоко",
-            status: TaskStatus.InProgress,
-            todoListId: tdlInitialState[1]?.id,
-            startDate: '',
-            deadline: '',
-            addedDate: '',
-            order: 0,
-            priority: TaskPriority.Middle,
-            completed: false,
-            description: ''
-        },
-    ],
-    [tdlInitialState[2]?.id]: [
-        {
-            id: v1(),
-            title: "Дориан Грей",
-            status: TaskStatus.Completed,
-            todoListId: tdlInitialState[2]?.id,
-            startDate: '',
-            deadline: '',
-            addedDate: '',
-            order: 0,
-            priority: TaskPriority.Middle,
-            completed: true,
-            description: ''
-        },
-        {
-            id: v1(),
-            title: "Зеленая миля",
-            status: TaskStatus.Completed,
-            todoListId: tdlInitialState[2]?.id,
-            startDate: '',
-            deadline: '',
-            addedDate: '',
-            order: 0,
-            priority: TaskPriority.Middle,
-            completed: true,
-            description: ''
-        },
-    ]
-}
+const initialState: TasksListType = {}
 
 export const tasksReducer = (state: TasksListType = initialState, action: ActionType): TasksListType => {
     switch (action.type) {
@@ -143,7 +44,7 @@ export const tasksReducer = (state: TasksListType = initialState, action: Action
             delete newState[action.payload.toDoListId]
             return newState
         case 'SET-TASKS':
-            return {...state, [action.payload.tdlID]: action.payload.tasks}
+            return {...state, [action.payload.toDoListId]: action.payload.tasks}
         default:
             return state
     }
@@ -163,7 +64,6 @@ type changeTaskTitleACType = ReturnType<typeof changeTaskTitleAC>
 type changeStatusACType = ReturnType<typeof changeStatusAC>
 type addTasksArrayACType = ReturnType<typeof addTasksArrayAC>
 type removeTasksArrayACType = ReturnType<typeof removeTasksArrayAC>
-
 type SetTasksType = ReturnType<typeof SetTasks>
 
 export const removeTaskAC = (toDoListId: string, taskId: string) => {
@@ -184,7 +84,6 @@ export const addTasksArrayAC = (toDoListId: string) => {
 export const removeTasksArrayAC = (toDoListId: string) => {
     return { type: 'REMOVE-TASKS-ARRAY', payload: {toDoListId} } as const
 }
-
-export const SetTasks = (tdlID: string, tasks: Array<TaskType>) => {
-    return { type: 'SET-TASKS', payload: {tdlID, tasks} } as const
+export const SetTasks = (toDoListId: string, tasks: Array<TaskType>) => {
+    return { type: 'SET-TASKS', payload: {toDoListId, tasks} } as const
 }

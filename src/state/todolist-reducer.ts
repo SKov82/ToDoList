@@ -1,18 +1,13 @@
 import {API, TodoListType} from '../api/api';
-import {v1} from 'uuid';
 import {Dispatch} from 'redux';
-import {addTasksArrayAC, SetTasks} from './tasks-reducer';
+import {addTasksArrayAC, removeTasksArrayAC, SetTasks} from './tasks-reducer';
 
 export type FilterType = 'all' | 'active' | 'done'
 export type TDLType = TodoListType & {
     filter: FilterType
 }
 
-export const tdlInitialState: Array<TDLType> = [
-    {id: v1(), title: 'What to learn ', addedDate: '', order: 0, filter: 'all'},
-    {id: v1(), title: 'What to buy ', addedDate: '', order: 1, filter: 'active'},
-    {id: v1(), title: 'Films to watch ', addedDate: '', order: 2, filter: 'done'},
-]
+export const tdlInitialState: Array<TDLType> = []
 
 export const todolistReducer = (state: Array<TDLType> = tdlInitialState, action: ActionType): TDLType[] => {
     switch (action.type) {
@@ -70,12 +65,29 @@ export const fetchTDL = (): any => {
         API.getTDL().then(data => {
             data.forEach(tdl => {
                 dispatch(addTasksArrayAC(tdl.id))
-                API.getTasks(tdl.id)
-                    .then(data => {
-                        dispatch(SetTasks(tdl.id, data.items))
-                    })
+                API.getTasks(tdl.id).then(data => dispatch(SetTasks(tdl.id, data.items)))
             })
             dispatch(SetTDL(data))
+        })
+    }
+}
+export const addTDL = (title: string): any => {
+    return (dispatch: Dispatch) => {
+        API.createTDL(title).then(data => {
+            if (!data.resultCode) {
+                dispatch(addTasksArrayAC(data.data.item.id))
+                dispatch(addTDListAC(data.data.item.id, title))
+            }
+        })
+    }
+}
+export const removeTDL = (toDoListId: string): any => {
+    return (dispatch: Dispatch) => {
+        API.deleteTDL(toDoListId).then(data => {
+            if (!data.resultCode) {
+                dispatch(removeTDListAC(toDoListId))
+                dispatch(removeTasksArrayAC(toDoListId))
+            }
         })
     }
 }
