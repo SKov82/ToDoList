@@ -84,15 +84,15 @@ export const removeTaskTC = (toDoListId: string, taskId: string): any => {
 export const changeTaskTC = (
     toDoListId: string, taskId: string, status: TaskStatus | null = null, title: string | null = null
 ): any => {
+    console.log(status)
     return (dispatch: Dispatch, getState: () => AppStateType) => {
         const task = getState().tasks[toDoListId].filter(t => t.id === taskId)[0]
         const newTask = {
             ...task,
             title: title || task.title,
-            status: status || task.status,
+            status: status === null ? task.status : status,
         }
         API.updateTask(toDoListId, taskId, newTask).then(data => {
-            console.log(newTask, data)
             if (!data.resultCode) dispatch(changeTaskAC(data.data.item))
         })
     }
