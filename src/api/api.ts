@@ -27,7 +27,6 @@ export enum TaskPriority {
 export type TaskType = {
     description: string
     title: string
-    completed: boolean
     status: TaskStatus
     priority: TaskPriority
     startDate: string

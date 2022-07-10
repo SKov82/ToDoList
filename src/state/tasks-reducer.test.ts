@@ -1,7 +1,7 @@
 import {v1} from 'uuid';
 import {TaskPriority, TaskStatus} from '../api/api';
 import {
-    addTaskAC, addTasksArrayAC, changeStatusAC, changeTaskTitleAC,
+    addTaskAC, addTasksArrayAC, changeTaskAC,
     removeTaskAC, removeTasksArrayAC, SetTasks, TasksListType, tasksReducer
 } from './tasks-reducer';
 
@@ -18,7 +18,6 @@ const startState: TasksListType = {
             addedDate: '',
             order: 0,
             priority: TaskPriority.Middle,
-            completed: true,
             description: ''
         },
         {
@@ -31,7 +30,6 @@ const startState: TasksListType = {
             addedDate: '',
             order: 0,
             priority: TaskPriority.Middle,
-            completed: true,
             description: ''
         },
         {
@@ -44,7 +42,6 @@ const startState: TasksListType = {
             addedDate: '',
             order: 0,
             priority: TaskPriority.Middle,
-            completed: false,
             description: ''
         },
     ],
@@ -59,7 +56,6 @@ const startState: TasksListType = {
             addedDate: '',
             order: 0,
             priority: TaskPriority.Middle,
-            completed: true,
             description: ''
         },
         {
@@ -72,7 +68,6 @@ const startState: TasksListType = {
             addedDate: '',
             order: 0,
             priority: TaskPriority.Middle,
-            completed: true,
             description: ''
         },
         {
@@ -85,7 +80,6 @@ const startState: TasksListType = {
             addedDate: '',
             order: 0,
             priority: TaskPriority.Middle,
-            completed: false,
             description: ''
         },
     ]
@@ -115,7 +109,6 @@ test('add task', () => {
             addedDate: '',
             order: 0,
             priority: TaskPriority.Middle,
-            completed: false,
             description: ''
         }
     ))
@@ -124,38 +117,71 @@ test('add task', () => {
     expect(endState[tdlId2].length).toBe(startState[tdlId2].length)
     expect(endState[tdlId1][0].id).toBeDefined()
     expect(endState[tdlId1][0].title).toBe('NewTask')
-    expect(endState[tdlId1][0].completed).toBe(false)
 })
 
 test('change task title', () => {
-    const endState = tasksReducer(
-        startState, changeTaskTitleAC(tdlId1, startState[tdlId1][0].id, 'NewTitle')
-    )
+    const endState = tasksReducer(startState, changeTaskAC(
+        {
+            id: startState[tdlId1][0].id,
+            title: 'NewTitle',
+            status: TaskStatus.InProgress,
+            todoListId: tdlId1,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TaskPriority.Middle,
+            description: ''
+        }
+    ))
 
     expect(endState[tdlId1].length).toBe(startState[tdlId1].length)
     expect(endState[tdlId2].length).toBe(startState[tdlId2].length)
     expect(endState[tdlId1][0].title).toBe('NewTitle')
     expect(endState[tdlId2][0].title).toBe(startState[tdlId2][0].title)
     expect(endState[tdlId1][0].id).toBe(startState[tdlId1][0].id)
-    expect(endState[tdlId1][0].completed).toBe(startState[tdlId1][0].completed)
 })
 
 test('change task status', () => {
     const endState = tasksReducer(
-        tasksReducer(startState, changeStatusAC(tdlId2, startState[tdlId2][1].id)),
-        changeStatusAC(tdlId1, startState[tdlId1][2].id)
+        tasksReducer(startState, changeTaskAC(
+            {
+                id: startState[tdlId2][1].id,
+                title: "Молоко",
+                status: TaskStatus.New,
+                todoListId: tdlId2,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                order: 0,
+                priority: TaskPriority.Middle,
+                description: ''
+            }
+        )),
+        changeTaskAC(
+            {
+                id: startState[tdlId1][2].id,
+                title: "React",
+                status: TaskStatus.Completed,
+                todoListId: tdlId1,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                order: 0,
+                priority: TaskPriority.Middle,
+                description: ''
+            }
+        )
     )
 
     expect(endState[tdlId1].length).toBe(startState[tdlId1].length)
     expect(endState[tdlId2].length).toBe(startState[tdlId2].length)
     expect(endState[tdlId1][2].title).toBe(startState[tdlId1][2].title)
     expect(endState[tdlId1][2].id).toBe(startState[tdlId1][2].id)
-    expect(endState[tdlId1][2].completed).toBe(!startState[tdlId1][2].completed)
-    expect(endState[tdlId1][2].completed).toBeTruthy()
+    expect(endState[tdlId1][2].status).toEqual(TaskStatus.Completed)
     expect(endState[tdlId2][1].title).toBe(startState[tdlId2][1].title)
     expect(endState[tdlId2][1].id).toBe(startState[tdlId2][1].id)
-    expect(endState[tdlId2][1].completed).toBe(!startState[tdlId2][1].completed)
-    expect(endState[tdlId2][1].completed).toBeFalsy()
+    expect(endState[tdlId2][1].status).toEqual(TaskStatus.New)
 })
 
 test('add empty array of tasks for new ToDoList', () => {
@@ -190,7 +216,6 @@ test('set tasks to the state', () => {
             addedDate: '',
             order: 0,
             priority: TaskPriority.Middle,
-            completed: false,
             description: ''
         },
         {
@@ -203,7 +228,6 @@ test('set tasks to the state', () => {
             addedDate: '',
             order: 0,
             priority: TaskPriority.Middle,
-            completed: true,
             description: ''
         },
     ])

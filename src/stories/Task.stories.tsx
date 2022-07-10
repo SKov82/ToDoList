@@ -25,7 +25,6 @@ export const TaskStories = (props: any) => {
                   addedDate: '',
                   order: 0,
                   priority: TaskPriority.Middle,
-                  completed: false,
                   description: ''
               } }
               changeStatus={changeTaskStatusCallback}
@@ -43,7 +42,6 @@ export const TaskStories = (props: any) => {
                   addedDate: '',
                   order: 0,
                   priority: TaskPriority.Middle,
-                  completed: true,
                   description: ''
               } }
               changeStatus={changeTaskStatusCallback}

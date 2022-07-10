@@ -29,7 +29,6 @@ const initialState: AppStateType = {
                 addedDate: '',
                 order: 0,
                 priority: TaskPriority.Middle,
-                completed: true,
                 description: ''
             },
             {
@@ -42,7 +41,6 @@ const initialState: AppStateType = {
                 addedDate: '',
                 order: 0,
                 priority: TaskPriority.Middle,
-                completed: false,
                 description: ''
             },
         ],
@@ -57,7 +55,6 @@ const initialState: AppStateType = {
                 addedDate: '',
                 order: 0,
                 priority: TaskPriority.Middle,
-                completed: true,
                 description: ''
             },
             {
@@ -70,7 +67,6 @@ const initialState: AppStateType = {
                 addedDate: '',
                 order: 0,
                 priority: TaskPriority.Middle,
-                completed: true,
                 description: ''
             },
         ],

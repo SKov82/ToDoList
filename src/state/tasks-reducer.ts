@@ -16,15 +16,11 @@ export const tasksReducer = (state: TasksListType = initialState, action: Action
             }
         case 'ADD-TASK':
             return {...state, [action.payload.task.todoListId]:
-                [ {...action.payload.task, completed: false}, ...state[action.payload.task.todoListId] ]
+                [ action.payload.task, ...state[action.payload.task.todoListId] ]
             }
-        case 'CHANGE-TASK-TITLE':
-            return {...state, [action.payload.toDoListId]: state[action.payload.toDoListId].map(
-                t => t.id === action.payload.taskId ? {...t, title: action.payload.title} : t
-            )}
-        case 'CHANGE-STATUS':
-            return {...state, [action.payload.toDoListId]: state[action.payload.toDoListId].map(
-                t => t.id === action.payload.taskId ? {...t, completed: !t.completed} : t
+        case 'CHANGE-TASK':
+            return {...state, [action.payload.task.todoListId]: state[action.payload.task.todoListId].map(
+                t => t.id === action.payload.task.id ? action.payload.task : t
             )}
         case 'ADD-TASKS-ARRAY':
             return { [action.payload.toDoListId]: [], ...state }
@@ -34,7 +30,7 @@ export const tasksReducer = (state: TasksListType = initialState, action: Action
             return newState
         case 'SET-TASKS':
             return {...state,
-                [action.payload.toDoListId]: action.payload.tasks.map(t => ({...t, completed: false}))
+                [action.payload.toDoListId]: action.payload.tasks
             }
         default:
             return state
@@ -43,8 +39,7 @@ export const tasksReducer = (state: TasksListType = initialState, action: Action
 
 type ActionType = ReturnType<typeof removeTaskAC>
     | ReturnType<typeof addTaskAC>
-    | ReturnType<typeof changeTaskTitleAC>
-    | ReturnType<typeof changeStatusAC>
+    | ReturnType<typeof changeTaskAC>
     | ReturnType<typeof addTasksArrayAC>
     | ReturnType<typeof removeTasksArrayAC>
     | ReturnType<typeof SetTasks>
@@ -55,11 +50,8 @@ export const removeTaskAC = (toDoListId: string, taskId: string) => {
 export const addTaskAC = (task: TaskType) => {
     return { type: 'ADD-TASK', payload: {task} } as const
 }
-export const changeTaskTitleAC = (toDoListId: string, taskId: string, title: string) => {
-    return { type: 'CHANGE-TASK-TITLE', payload: {toDoListId, taskId, title} } as const
-}
-export const changeStatusAC = (toDoListId: string, taskId: string) => {
-    return { type: 'CHANGE-STATUS', payload: {toDoListId, taskId} } as const
+export const changeTaskAC = (task: TaskType) => {
+    return { type: 'CHANGE-TASK', payload: {task} } as const
 }
 export const addTasksArrayAC = (toDoListId: string) => {
     return { type: 'ADD-TASKS-ARRAY', payload: {toDoListId} } as const
@@ -100,10 +92,8 @@ export const changeTaskTC = (
             status: status || task.status,
         }
         API.updateTask(toDoListId, taskId, newTask).then(data => {
-            if (!data.resultCode) {
-                if (status) dispatch(changeStatusAC(toDoListId, taskId))
-                if (title) dispatch(changeTaskTitleAC(toDoListId, taskId, title))
-            }
+            console.log(newTask, data)
+            if (!data.resultCode) dispatch(changeTaskAC(data.data.item))
         })
     }
 }

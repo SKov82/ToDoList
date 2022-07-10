@@ -12,6 +12,7 @@ import {
 } from './state/todolist-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from './state/store';
+import {TaskStatus} from './api/api';
 
 function AppWithRedux() {
     const dispatch = useDispatch()
@@ -28,8 +29,8 @@ function AppWithRedux() {
     const addTask = useCallback((toDoListId: string, title: string) => {
         if (toDoListId && title) dispatch(addTaskTC(toDoListId, title))
     }, [dispatch])
-    const changeStatus = useCallback((toDoListId: string, taskId: string) => {
-        dispatch(changeTaskTC(toDoListId, taskId))
+    const changeStatus = useCallback((toDoListId: string, taskId: string, status: TaskStatus) => {
+        dispatch(changeTaskTC(toDoListId, taskId, status))
     }, [dispatch])
     const changeTaskTitle = useCallback((toDoListId: string, taskId: string, title: string) => {
         dispatch(changeTaskTC(toDoListId, taskId, null, title))
