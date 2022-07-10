@@ -26,7 +26,7 @@ export const Task = React.memo((props: TaskPropsType) => {
     }, [props.changeStatus, props.todolistID, props.task.id, props.task.status])
 
     return (
-        <ListItem className={`${props.task.status === TaskStatus.Completed ? 'is-done' : ''} ${'listItem'}`}
+        <ListItem className={`${props.task.status === TaskStatus.Completed ? 'is-done' : ''} listItem`}
                   divider={true}
                   sx={{padding: '5px'}}
         >
