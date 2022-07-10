@@ -34,12 +34,12 @@ type ActionType = ReturnType<typeof removeTaskAC>
     | ReturnType<typeof removeTasksArrayAC>
     | ReturnType<typeof SetTasks>
 
-export const removeTaskAC = (toDoListId: string, taskId: string) => ({ type: 'REMOVE-TASK', toDoListId, taskId } as const)
-export const addTaskAC = (task: TaskType) => ({ type: 'ADD-TASK', task } as const)
-export const changeTaskAC = (task: TaskType) => ({ type: 'CHANGE-TASK', task } as const)
-export const addTasksArrayAC = (toDoListId: string) => ({ type: 'ADD-TASKS-ARRAY', toDoListId } as const)
-export const removeTasksArrayAC = (toDoListId: string) => ({ type: 'REMOVE-TASKS-ARRAY', toDoListId } as const)
-export const SetTasks = (toDoListId: string, tasks: Array<TaskType>) => ({ type: 'SET-TASKS', toDoListId, tasks } as const)
+export const removeTaskAC = (toDoListId: string, taskId: string) => ({type: 'REMOVE-TASK', toDoListId, taskId} as const)
+export const addTaskAC = (task: TaskType) => ({type: 'ADD-TASK', task} as const)
+export const changeTaskAC = (task: TaskType) => ({type: 'CHANGE-TASK', task} as const)
+export const addTasksArrayAC = (toDoListId: string) => ({type: 'ADD-TASKS-ARRAY', toDoListId} as const)
+export const removeTasksArrayAC = (toDoListId: string) => ({type: 'REMOVE-TASKS-ARRAY', toDoListId} as const)
+export const SetTasks = (toDoListId: string, tasks: Array<TaskType>) => ({type: 'SET-TASKS', toDoListId, tasks} as const)
 
 export const addTaskTC = (toDoListId: string, title: string): any => {
     return (dispatch: Dispatch) => {
