@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {ToDoList} from "./components/ToDoList";
 import {AddItem} from './components/AddItem';
-import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from '@mui/material';
+import {AppBar, Button, Container, Grid, IconButton, LinearProgress, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
     addTaskTC, changeTaskTC, removeTaskTC, TasksListType
@@ -13,6 +13,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from './state/store';
 import {TaskStatus} from './api/api';
+import Alert from './components/ui/Alert'
 
 function App() {
     const dispatch = useDispatch()
@@ -69,6 +70,8 @@ function App() {
 
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+
+                <LinearProgress sx={{ bgcolor: `${'transparent' && 'orange'}` }} />
             </AppBar>
 
             <Grid sx={{ marginTop: 3, marginLeft: 3 }}>
@@ -97,6 +100,7 @@ function App() {
                     })}
                 </Grid>
             </Container>
+            <Alert />
         </div>
     );
 }
