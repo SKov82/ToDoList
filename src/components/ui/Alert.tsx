@@ -4,6 +4,7 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from '../../state/store';
 import {setError} from '../../state/app-reducer';
+import {AlertTitle} from '@mui/material';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -23,11 +24,12 @@ export default function CustomizedSnackbars() {
 
     return (
         <Snackbar open={!!error}
-                  autoHideDuration={4000}
+                  autoHideDuration={5000}
                   onClose={handleClose}
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         >
             <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+                <AlertTitle>Ошибка!</AlertTitle>
                 {error}
             </Alert>
         </Snackbar>

@@ -1,6 +1,7 @@
 import {API, TaskStatus, TaskType} from '../api/api';
 import {Dispatch} from 'redux';
 import {AppStateType} from './store';
+import {setError} from './app-reducer';
 
 export type TasksListType = {
     [key: string]: Array<TaskType>
@@ -44,14 +45,18 @@ export const SetTasks = (toDoListId: string, tasks: Array<TaskType>) => ({type: 
 export const addTaskTC = (toDoListId: string, title: string): any => {
     return (dispatch: Dispatch) => {
         API.createTask(toDoListId, title).then(data => {
-            if (!data.resultCode) dispatch(addTaskAC(data.data.item))
+            if (!data.resultCode) {
+                dispatch(addTaskAC(data.data.item))
+            } else data.messages.forEach(m => dispatch(setError(m)))
         })
     }
 }
 export const removeTaskTC = (toDoListId: string, taskId: string): any => {
     return (dispatch: Dispatch) => {
         API.deleteTask(toDoListId, taskId).then(data => {
-            if (!data.resultCode) dispatch(removeTaskAC(toDoListId, taskId))
+            if (!data.resultCode) {
+                dispatch(removeTaskAC(toDoListId, taskId))
+            } else data.messages.forEach(m => dispatch(setError(m)))
         })
     }
 }
