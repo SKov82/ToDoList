@@ -1,7 +1,7 @@
 import {API, TodoListType} from '../api/api';
 import {Dispatch} from 'redux';
 import {addTasksArrayAC, removeTasksArrayAC, SetTasks} from './tasks-reducer';
-import {setStatus} from './app-reducer';
+import {setError, setStatus} from './app-reducer';
 
 export type FilterType = 'all' | 'active' | 'done'
 export type TDLType = TodoListType & {
@@ -51,28 +51,45 @@ export const fetchTDL = (): any => {
 }
 export const addTDL = (title: string): any => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatus('loading'))
         API.createTDL(title).then(data => {
             if (!data.resultCode) {
                 dispatch(addTasksArrayAC(data.data.item.id))
                 dispatch(addTDListAC(data.data.item))
+                dispatch(setStatus('success'))
+            } else {
+                data.messages.forEach(m => dispatch(setError(m)))
+                dispatch(setStatus('failed'))
             }
         })
     }
 }
 export const removeTDL = (toDoListId: string): any => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatus('loading'))
         API.deleteTDL(toDoListId).then(data => {
             if (!data.resultCode) {
                 dispatch(removeTDListAC(toDoListId))
                 dispatch(removeTasksArrayAC(toDoListId))
+                dispatch(setStatus('success'))
+            } else {
+                data.messages.forEach(m => dispatch(setError(m)))
+                dispatch(setStatus('failed'))
             }
         })
     }
 }
 export const changeTDLTitle = (toDoListId: string, title: string): any => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatus('loading'))
         API.updateTDL(toDoListId, title).then(data => {
-            if (!data.resultCode) dispatch(changeTDLTitleAC(toDoListId, title))
+            if (!data.resultCode) {
+                dispatch(changeTDLTitleAC(toDoListId, title))
+                dispatch(setStatus('success'))
+            } else {
+                data.messages.forEach(m => dispatch(setError(m)))
+                dispatch(setStatus('failed'))
+            }
         })
     }
 }

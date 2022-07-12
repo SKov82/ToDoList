@@ -36,7 +36,7 @@ export const TDL = React.memo(() => {
         dispatch(removeTDL(toDoListId))
     }, [dispatch])
     const addToDoList = useCallback((title: string) => {
-        dispatch(addTDL(title))
+        if (title) dispatch(addTDL(title))
     }, [dispatch])
     const changeToDoListTitle = useCallback((toDoListId: string, newTitle: string) => {
         dispatch(changeTDLTitle(toDoListId, newTitle))

@@ -1,7 +1,7 @@
 import {API, TaskStatus, TaskType} from '../api/api';
 import {Dispatch} from 'redux';
 import {AppStateType} from './store';
-import {setError} from './app-reducer';
+import {setError, setStatus} from './app-reducer';
 
 export type TasksListType = {
     [key: string]: Array<TaskType>
@@ -44,19 +44,29 @@ export const SetTasks = (toDoListId: string, tasks: Array<TaskType>) => ({type: 
 
 export const addTaskTC = (toDoListId: string, title: string): any => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatus('loading'))
         API.createTask(toDoListId, title).then(data => {
             if (!data.resultCode) {
                 dispatch(addTaskAC(data.data.item))
-            } else data.messages.forEach(m => dispatch(setError(m)))
+                dispatch(setStatus('success'))
+            } else {
+                data.messages.forEach(m => dispatch(setError(m)))
+                dispatch(setStatus('failed'))
+            }
         })
     }
 }
 export const removeTaskTC = (toDoListId: string, taskId: string): any => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatus('loading'))
         API.deleteTask(toDoListId, taskId).then(data => {
             if (!data.resultCode) {
                 dispatch(removeTaskAC(toDoListId, taskId))
-            } else data.messages.forEach(m => dispatch(setError(m)))
+                dispatch(setStatus('success'))
+            } else {
+                data.messages.forEach(m => dispatch(setError(m)))
+                dispatch(setStatus('failed'))
+            }
         })
     }
 }
@@ -70,8 +80,15 @@ export const changeTaskTC = (
             title: title || task.title,
             status: status === null ? task.status : status,
         }
+        dispatch(setStatus('loading'))
         API.updateTask(toDoListId, taskId, newTask).then(data => {
-            if (!data.resultCode) dispatch(changeTaskAC(data.data.item))
+            if (!data.resultCode) {
+                dispatch(changeTaskAC(data.data.item))
+                dispatch(setStatus('success'))
+            } else {
+                data.messages.forEach(m => dispatch(setError(m)))
+                dispatch(setStatus('failed'))
+            }
         })
     }
 }
