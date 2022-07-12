@@ -20,35 +20,33 @@ export const AddItem = React.memo( ({addItem, defaultTitle}: AddItemType) => {
         }
     }, [title, addItem, defaultTitle])
 
-    return (
-        <>
-            <TextField value={title}
-                       onChange={ (event: ChangeEvent<HTMLInputElement>) => {
-                           setTitle(event.currentTarget.value)
-                           setError('')
-                       }}
-                       onKeyPress={ (event: KeyboardEvent<HTMLInputElement>) => {
-                           if (event.key === 'Enter') addHandler()
-                       }}
-                       onBlur={ () => addItem('') }
-                       autoFocus
-                       label={defaultTitle ? defaultTitle : 'Новая задача'}
-                       variant="outlined"
-                       size={'small'}
-                       error={!!error}
-                       helperText={error}
-            />
+    return <>
+        <TextField value={title}
+                   onChange={ (event: ChangeEvent<HTMLInputElement>) => {
+                       setTitle(event.currentTarget.value)
+                       setError('')
+                   }}
+                   onKeyPress={ (event: KeyboardEvent<HTMLInputElement>) => {
+                       if (event.key === 'Enter') addHandler()
+                   }}
+                   onBlur={ () => addItem('') }
+                   autoFocus
+                   label={defaultTitle ? defaultTitle : 'Новая задача'}
+                   variant="outlined"
+                   size={'small'}
+                   error={!!error}
+                   helperText={error}
+        />
 
-            {addItem.name !== 'changeEditMode'
-            ? <IconButton
-                    onMouseDown={(e) => {e.preventDefault()}}
-                    // onMouseDown перехватывает приоритет у onBlur и дает шанс отработать onClick
-                    onClick={addHandler}
-                    sx={{ marginLeft: "2px" }}
-                >
-                    <AddTaskIcon fontSize={'medium'} color={'primary'} />
-              </IconButton>
-            : ''}
-        </>
-    )
+        {addItem.name !== 'changeEditMode'
+        ? <IconButton
+                onMouseDown={(e) => {e.preventDefault()}}
+                // onMouseDown перехватывает приоритет у onBlur и дает шанс отработать onClick
+                onClick={addHandler}
+                sx={{ marginLeft: "2px" }}
+            >
+                <AddTaskIcon fontSize={'medium'} color={'primary'} />
+          </IconButton>
+        : ''}
+    </>
 } )
