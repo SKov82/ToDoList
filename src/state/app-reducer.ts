@@ -1,4 +1,4 @@
-type StatusType = 'idle' | 'loading' | 'success' | 'failed'
+export type StatusType = 'idle' | 'loading' | 'success' | 'failed'
 export type AppInitStateType = {
     status: StatusType
     error: string | null

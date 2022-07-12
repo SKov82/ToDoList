@@ -4,8 +4,14 @@ import {AppBar, Button, IconButton, LinearProgress, Toolbar, Typography} from '@
 import MenuIcon from '@mui/icons-material/Menu';
 import Alert from './components/ui/Alert'
 import {TDL} from './components/TDL';
+import {useSelector} from 'react-redux';
+import {AppStateType} from './state/store';
+import {StatusType} from './state/app-reducer';
 
 function App() {
+    const status = useSelector<AppStateType, StatusType>(state => state.app.status)
+    const style = status === 'loading' ? 1 : 0
+
     return (
         <div className="App">
             <AppBar position="static">
@@ -26,9 +32,8 @@ function App() {
 
                     <Button color="inherit">Login</Button>
                 </Toolbar>
-
-                <LinearProgress sx={{ bgcolor: `${'transparent' && 'orange'}` }} />
             </AppBar>
+            <LinearProgress sx={{ bgcolor: 'orange', opacity: `${style}` }} />
             <TDL />
             <Alert />
         </div>

@@ -1,6 +1,7 @@
 import {API, TodoListType} from '../api/api';
 import {Dispatch} from 'redux';
 import {addTasksArrayAC, removeTasksArrayAC, SetTasks} from './tasks-reducer';
+import {setStatus} from './app-reducer';
 
 export type FilterType = 'all' | 'active' | 'done'
 export type TDLType = TodoListType & {
@@ -37,12 +38,14 @@ export const SetTDL = (toDoLists: Array<TodoListType>) => ({type: 'SET-TODOLISTS
 
 export const fetchTDL = (): any => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatus('loading'))
         API.getTDL().then(data => {
             data.forEach(tdl => {
                 dispatch(addTasksArrayAC(tdl.id))
                 API.getTasks(tdl.id).then(data => dispatch(SetTasks(tdl.id, data.items)))
             })
             dispatch(SetTDL(data))
+            dispatch(setStatus('success'))
         })
     }
 }
