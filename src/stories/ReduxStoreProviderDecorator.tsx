@@ -73,7 +73,10 @@ const initialState: AppStateType = {
             },
         ],
     },
-    app: null
+    app: {
+        status: 'idle',
+        error: null,
+    }
 }
 
 export const storyBookStore = createStore(rootReducer, initialState)
