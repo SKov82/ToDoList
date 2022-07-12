@@ -6,10 +6,12 @@ import {tdlInitialState, todolistReducer} from '../state/todolist-reducer';
 import {tasksReducer} from '../state/tasks-reducer';
 import {v1} from 'uuid';
 import {TaskPriority, TaskStatus} from '../api/api';
+import {appReducer} from '../state/app-reducer';
 
 const rootReducer = combineReducers({
     todolists: todolistReducer,
-    tasks: tasksReducer
+    tasks: tasksReducer,
+    app: appReducer,
 })
 
 const initialState: AppStateType = {
@@ -70,7 +72,8 @@ const initialState: AppStateType = {
                 description: ''
             },
         ],
-    }
+    },
+    app: null
 }
 
 export const storyBookStore = createStore(rootReducer, initialState)
