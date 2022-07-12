@@ -53,6 +53,9 @@ export const addTaskTC = (toDoListId: string, title: string): any => {
                 data.messages.forEach(m => dispatch(setError(m)))
                 dispatch(setStatus('failed'))
             }
+        }).catch(error => {
+            dispatch(setError(error.message))
+            dispatch(setStatus('failed'))
         })
     }
 }
@@ -67,6 +70,9 @@ export const removeTaskTC = (toDoListId: string, taskId: string): any => {
                 data.messages.forEach(m => dispatch(setError(m)))
                 dispatch(setStatus('failed'))
             }
+        }).catch(error => {
+            dispatch(setError(error.message))
+            dispatch(setStatus('failed'))
         })
     }
 }
@@ -89,6 +95,9 @@ export const changeTaskTC = (
                 data.messages.forEach(m => dispatch(setError(m)))
                 dispatch(setStatus('failed'))
             }
+        }).catch(error => {
+            dispatch(setError(error.message))
+            dispatch(setStatus('failed'))
         })
     }
 }

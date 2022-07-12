@@ -42,10 +42,16 @@ export const fetchTDL = (): any => {
         API.getTDL().then(data => {
             data.forEach(tdl => {
                 dispatch(addTasksArrayAC(tdl.id))
-                API.getTasks(tdl.id).then(data => dispatch(SetTasks(tdl.id, data.items)))
+                API.getTasks(tdl.id).then(data => dispatch(SetTasks(tdl.id, data.items))).catch(error => {
+                    dispatch(setError(error.message))
+                    dispatch(setStatus('failed'))
+                })
             })
             dispatch(SetTDL(data))
             dispatch(setStatus('success'))
+        }).catch(error => {
+            dispatch(setError(error.message))
+            dispatch(setStatus('failed'))
         })
     }
 }
@@ -61,6 +67,9 @@ export const addTDL = (title: string): any => {
                 data.messages.forEach(m => dispatch(setError(m)))
                 dispatch(setStatus('failed'))
             }
+        }).catch(error => {
+            dispatch(setError(error.message))
+            dispatch(setStatus('failed'))
         })
     }
 }
@@ -76,6 +85,9 @@ export const removeTDL = (toDoListId: string): any => {
                 data.messages.forEach(m => dispatch(setError(m)))
                 dispatch(setStatus('failed'))
             }
+        }).catch(error => {
+            dispatch(setError(error.message))
+            dispatch(setStatus('failed'))
         })
     }
 }
@@ -90,6 +102,9 @@ export const changeTDLTitle = (toDoListId: string, title: string): any => {
                 data.messages.forEach(m => dispatch(setError(m)))
                 dispatch(setStatus('failed'))
             }
+        }).catch(error => {
+            dispatch(setError(error.message))
+            dispatch(setStatus('failed'))
         })
     }
 }
