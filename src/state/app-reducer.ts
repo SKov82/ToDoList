@@ -5,7 +5,7 @@ export type AppInitStateType = {
 }
 const appInitState: AppInitStateType = {
     status: 'idle',
-    error: 'Ошибка !',
+    error: null,
 }
 export const appReducer = (state: AppInitStateType = appInitState, action: ActionType): AppInitStateType => {
     switch (action.type) {

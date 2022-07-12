@@ -1,7 +1,6 @@
 import {AppInitStateType, appReducer, setError, setStatus} from './app-reducer';
 
 let startState: AppInitStateType
-
 beforeEach(() => {
     startState = {
         status: 'idle',
