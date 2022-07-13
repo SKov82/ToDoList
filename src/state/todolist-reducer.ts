@@ -1,7 +1,8 @@
 import {API, TodoListType} from '../api/api';
 import {Dispatch} from 'redux';
 import {addTasksArrayAC, removeTasksArrayAC, SetTasks} from './tasks-reducer';
-import {setError, setStatus} from './app-reducer';
+import {setStatus} from './app-reducer';
+import {apiErrorHandler, networkErrorHandler} from '../utils/error-utils';
 
 export type FilterType = 'all' | 'active' | 'done'
 export type TDLType = TodoListType & {
@@ -42,17 +43,13 @@ export const fetchTDL = (): any => {
         API.getTDL().then(data => {
             data.forEach(tdl => {
                 dispatch(addTasksArrayAC(tdl.id))
-                API.getTasks(tdl.id).then(data => dispatch(SetTasks(tdl.id, data.items))).catch(error => {
-                    dispatch(setError(error.message))
-                    dispatch(setStatus('failed'))
-                })
+                API.getTasks(tdl.id)
+                    .then(data => dispatch(SetTasks(tdl.id, data.items)))
+                    .catch(error => networkErrorHandler(error, dispatch))
             })
             dispatch(SetTDL(data))
             dispatch(setStatus('success'))
-        }).catch(error => {
-            dispatch(setError(error.message))
-            dispatch(setStatus('failed'))
-        })
+        }).catch(error => networkErrorHandler(error, dispatch))
     }
 }
 export const addTDL = (title: string): any => {
@@ -63,14 +60,8 @@ export const addTDL = (title: string): any => {
                 dispatch(addTasksArrayAC(data.data.item.id))
                 dispatch(addTDListAC(data.data.item))
                 dispatch(setStatus('success'))
-            } else {
-                data.messages.forEach(m => dispatch(setError(m)))
-                dispatch(setStatus('failed'))
-            }
-        }).catch(error => {
-            dispatch(setError(error.message))
-            dispatch(setStatus('failed'))
-        })
+            } else apiErrorHandler(data, dispatch)
+        }).catch(error => networkErrorHandler(error, dispatch))
     }
 }
 export const removeTDL = (toDoListId: string): any => {
@@ -81,14 +72,8 @@ export const removeTDL = (toDoListId: string): any => {
                 dispatch(removeTDListAC(toDoListId))
                 dispatch(removeTasksArrayAC(toDoListId))
                 dispatch(setStatus('success'))
-            } else {
-                data.messages.forEach(m => dispatch(setError(m)))
-                dispatch(setStatus('failed'))
-            }
-        }).catch(error => {
-            dispatch(setError(error.message))
-            dispatch(setStatus('failed'))
-        })
+            } else apiErrorHandler(data, dispatch)
+        }).catch(error => networkErrorHandler(error, dispatch))
     }
 }
 export const changeTDLTitle = (toDoListId: string, title: string): any => {
@@ -98,13 +83,7 @@ export const changeTDLTitle = (toDoListId: string, title: string): any => {
             if (!data.resultCode) {
                 dispatch(changeTDLTitleAC(toDoListId, title))
                 dispatch(setStatus('success'))
-            } else {
-                data.messages.forEach(m => dispatch(setError(m)))
-                dispatch(setStatus('failed'))
-            }
-        }).catch(error => {
-            dispatch(setError(error.message))
-            dispatch(setStatus('failed'))
-        })
+            } else apiErrorHandler(data, dispatch)
+        }).catch(error => networkErrorHandler(error, dispatch))
     }
 }

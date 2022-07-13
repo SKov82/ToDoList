@@ -1,7 +1,8 @@
 import {API, TaskStatus, TaskType} from '../api/api';
 import {Dispatch} from 'redux';
 import {AppStateType} from './store';
-import {setError, setStatus} from './app-reducer';
+import {setStatus} from './app-reducer';
+import {apiErrorHandler, networkErrorHandler} from '../utils/error-utils';
 
 export type TasksListType = {
     [key: string]: Array<TaskType>
@@ -49,14 +50,8 @@ export const addTaskTC = (toDoListId: string, title: string): any => {
             if (!data.resultCode) {
                 dispatch(addTaskAC(data.data.item))
                 dispatch(setStatus('success'))
-            } else {
-                data.messages.forEach(m => dispatch(setError(m)))
-                dispatch(setStatus('failed'))
-            }
-        }).catch(error => {
-            dispatch(setError(error.message))
-            dispatch(setStatus('failed'))
-        })
+            } else apiErrorHandler(data, dispatch)
+        }).catch(error => networkErrorHandler(error, dispatch))
     }
 }
 export const removeTaskTC = (toDoListId: string, taskId: string): any => {
@@ -66,14 +61,8 @@ export const removeTaskTC = (toDoListId: string, taskId: string): any => {
             if (!data.resultCode) {
                 dispatch(removeTaskAC(toDoListId, taskId))
                 dispatch(setStatus('success'))
-            } else {
-                data.messages.forEach(m => dispatch(setError(m)))
-                dispatch(setStatus('failed'))
-            }
-        }).catch(error => {
-            dispatch(setError(error.message))
-            dispatch(setStatus('failed'))
-        })
+            } else apiErrorHandler(data, dispatch)
+        }).catch(error => networkErrorHandler(error, dispatch))
     }
 }
 export const changeTaskTC = (
@@ -91,13 +80,7 @@ export const changeTaskTC = (
             if (!data.resultCode) {
                 dispatch(changeTaskAC(data.data.item))
                 dispatch(setStatus('success'))
-            } else {
-                data.messages.forEach(m => dispatch(setError(m)))
-                dispatch(setStatus('failed'))
-            }
-        }).catch(error => {
-            dispatch(setError(error.message))
-            dispatch(setStatus('failed'))
-        })
+            } else apiErrorHandler(data, dispatch)
+        }).catch(error => networkErrorHandler(error, dispatch))
     }
 }
