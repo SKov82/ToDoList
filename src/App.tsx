@@ -7,7 +7,7 @@ import {TDL} from './components/TDL';
 import {useSelector} from 'react-redux';
 import {AppStateType} from './state/store';
 import {StatusType} from './state/app-reducer';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from './components/ui/Login';
 
 function App() {
@@ -40,7 +40,8 @@ function App() {
             <Routes>
                 <Route path='/' element={<TDL />} />
                 <Route path='/login' element={<Login />} />
-                <Route path='*' element={<h1>404: PAGE NOT FOUND</h1>} />
+                <Route path='/404' element={<h1>404: PAGE NOT FOUND</h1>} />
+                <Route path='*' element={<Navigate to='/404' />} />
             </Routes>
 
             <Alert />
