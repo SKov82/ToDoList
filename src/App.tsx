@@ -7,6 +7,8 @@ import {TDL} from './components/TDL';
 import {useSelector} from 'react-redux';
 import {AppStateType} from './state/store';
 import {StatusType} from './state/app-reducer';
+import { Routes, Route } from 'react-router-dom';
+import { Login } from './components/ui/Login';
 
 function App() {
     const status = useSelector<AppStateType, StatusType>(state => state.app.status)
@@ -34,7 +36,13 @@ function App() {
                 </Toolbar>
             </AppBar>
             <LinearProgress sx={{ bgcolor: 'orange', opacity: `${style}` }} />
-            <TDL />
+
+            <Routes>
+                <Route path='/' element={<TDL />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='*' element={<h1>404: PAGE NOT FOUND</h1>} />
+            </Routes>
+
             <Alert />
         </div>
     );
