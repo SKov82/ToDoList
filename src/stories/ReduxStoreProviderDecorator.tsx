@@ -78,6 +78,7 @@ const initialState: AppStateType = {
         status: 'idle',
         error: null,
         isLoggedIn: false,
+        isInit: false,
     }
 }
 
