@@ -35,11 +35,11 @@ export const authToggle = () => ({type: 'AUTH_TOGGLE'} as const)
 
 type AuthPropsType = {
     type: 'auth' | 'login' | 'logout'
-    email: string
-    password: string
-    rememberMe: boolean
+    email?: string
+    password?: string
+    rememberMe?: boolean
 }
-export const authMe = ({type, email, password, rememberMe}: AuthPropsType) => {
+export const authMe = ({type, email = '', password = '', rememberMe = false}: AuthPropsType): any => {
     return (dispatch: Dispatch) => {
         dispatch(setStatus('loading'))
         const res = type === 'auth'
@@ -55,25 +55,3 @@ export const authMe = ({type, email, password, rememberMe}: AuthPropsType) => {
         }).catch(error => networkErrorHandler(error, dispatch))
     }
 }
-// export const logIn = (email: string, password: string, rememberMe: boolean) => {
-//     return (dispatch: Dispatch) => {
-//         dispatch(setStatus('loading'))
-//         API.login(email, password, rememberMe).then(data => {
-//             if (!data.resultCode) {
-//                 dispatch(authToggle())
-//                 dispatch(setStatus('success'))
-//             } else apiErrorHandler(data, dispatch)
-//         }).catch(error => networkErrorHandler(error, dispatch))
-//     }
-// }
-// export const logOut = () => {
-//     return (dispatch: Dispatch) => {
-//         dispatch(setStatus('loading'))
-//         API.auth().then(data => {
-//             if (!data.resultCode) {
-//                 dispatch(authToggle())
-//                 dispatch(setStatus('success'))
-//             } else apiErrorHandler(data, dispatch)
-//         }).catch(error => networkErrorHandler(error, dispatch))
-//     }
-// }
