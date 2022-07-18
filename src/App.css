@@ -25,3 +25,8 @@
   opacity: .75;
   transition: .5s;
 }
+
+.link {
+  text-decoration: none;
+  color: unset;
+}
