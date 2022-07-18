@@ -41,13 +41,7 @@ type GetTasksResponseType = {
     totalCount: number
     error: string | null
 }
-type CrUpdTaskResponseType = {
-    data: {
-        item: TaskType
-    }
-    resultCode: number
-    messages: Array<string>
-}
+type CrUpdTaskResponseType = ResponseType<{item: TaskType}>
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -81,5 +75,15 @@ export const API = {
     },
     updateTask(tdlID: string, taskID: string, task: TaskType) {
         return instance.put<CrUpdTaskResponseType>(`todo-lists/${tdlID}/tasks/${taskID}`, {...task}).then(response => response.data)
+    },
+    // auth
+    auth() {
+        return instance.get('auth/me').then(response => response.data)
+    },
+    login() {
+        return instance.post('auth/login').then(response => response.data)
+    },
+    logout() {
+        return instance.delete('auth/login').then(response => response.data)
     },
 }
