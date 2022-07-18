@@ -43,6 +43,13 @@ type GetTasksResponseType = {
 }
 type CrUpdTaskResponseType = ResponseType<{item: TaskType}>
 
+type AuthType = ResponseType<{
+    id: number
+    email: string
+    login: string
+}>
+type LoginType = ResponseType<{userId: number}>
+
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
@@ -78,12 +85,12 @@ export const API = {
     },
     // auth
     auth() {
-        return instance.get('auth/me').then(response => response.data)
+        return instance.get<AuthType>('auth/me').then(response => response.data)
     },
-    login() {
-        return instance.post('auth/login').then(response => response.data)
+    login(email: string, password: string, rememberMe: boolean) {
+        return instance.post<LoginType>('auth/login').then(response => response.data)
     },
     logout() {
-        return instance.delete('auth/login').then(response => response.data)
+        return instance.delete<ResponseType>('auth/login').then(response => response.data)
     },
 }
