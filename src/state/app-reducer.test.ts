@@ -4,7 +4,7 @@ let startState: AppInitStateType
 beforeEach(() => {
     startState = {
         status: 'idle',
-        error: null,
+        error: '',
         isLoggedIn: false,
         isInit: false
     }
@@ -23,7 +23,7 @@ test('set status', () => {
     const endState = appReducer(startState, setStatus('failed'))
 
     expect(endState.status).toBe('failed')
-    expect(endState.error).toBe(null)
+    expect(endState.error).toBe('')
     expect(endState.isLoggedIn).toBeFalsy()
     expect(endState.isInit).toBeFalsy()
 })

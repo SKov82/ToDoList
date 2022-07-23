@@ -1,43 +1,32 @@
 import {Dispatch} from 'redux';
 import {API} from '../api/api';
 import {apiErrorHandler, networkErrorHandler} from '../utils/error-utils';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-export type StatusType = 'idle' | 'loading' | 'success' | 'failed'
 export type AppInitStateType = {
-    status: StatusType
-    error: string | null
+    status: string
+    error: string
     isLoggedIn: boolean
     isInit: boolean
 }
-const appInitState: AppInitStateType = {
+const appInitState = {
     status: 'idle',
-    error: null,
+    error: '',
     isLoggedIn: false,
     isInit: false,
 }
-export const appReducer = (state: AppInitStateType = appInitState, action: AppActionType): AppInitStateType => {
-    switch (action.type) {
-        case 'SET_STATUS':
-            return {...state, status: action.status}
-        case 'SET_ERROR':
-            return {...state, error: action.error}
-        case 'AUTH_TOGGLE':
-            return {...state, isLoggedIn: !state.isLoggedIn}
-        case 'INIT_APP':
-            return {...state, isInit: true}
-        default:
-            return state
-    }
-}
-export type AppActionType = ReturnType<typeof setStatus>
-    | ReturnType<typeof setError>
-    | ReturnType<typeof authToggle>
-    | ReturnType<typeof initOn>
-
-export const setStatus = (status: StatusType) => ({type: 'SET_STATUS', status} as const)
-export const setError = (error: string | null) => ({type: 'SET_ERROR', error} as const)
-export const authToggle = () => ({type: 'AUTH_TOGGLE'} as const)
-export const initOn = () => ({type: 'INIT_APP'} as const)
+const slice = createSlice({
+    name: 'app',
+    initialState: appInitState,
+    reducers: {
+        setStatus(state, action: PayloadAction<string>) { state.status = action.payload },
+        setError(state, action: PayloadAction<string>) { state.error = action.payload },
+        authToggle(state) { state.isLoggedIn = !state.isLoggedIn },
+        initOn(state) { state.isInit = true },
+    },
+})
+export const appReducer = slice.reducer
+export const {setStatus, setError, authToggle, initOn} = slice.actions
 
 type AuthPropsType = {
     type: 'auth' | 'login' | 'logout'
