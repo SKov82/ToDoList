@@ -1,6 +1,6 @@
 import {API, TodoListType} from '../api/api';
 import {Dispatch} from 'redux';
-import {addTasksArrayAC, removeTasksArrayAC, SetTasks} from './tasks-reducer';
+import {addTasksArray, removeTasksArray, setTasks} from './tasks-reducer';
 import {setStatus} from './app-reducer';
 import {apiErrorHandler, networkErrorHandler} from '../utils/error-utils';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
@@ -45,9 +45,9 @@ export const fetchTDL = (): any => {
         dispatch(setStatus('loading'))
         API.getTDL().then(data => {
             data.forEach(tdl => {
-                dispatch(addTasksArrayAC(tdl.id))
+                dispatch(addTasksArray(tdl.id))
                 API.getTasks(tdl.id)
-                    .then(data => dispatch(SetTasks(tdl.id, data.items)))
+                    .then(data => dispatch(setTasks({toDoListId: tdl.id, tasks: data.items})))
                     .catch(error => networkErrorHandler(error, dispatch))
             })
             dispatch(setTDList(data))
@@ -60,7 +60,7 @@ export const addTDL = (title: string): any => {
         dispatch(setStatus('loading'))
         API.createTDL(title).then(data => {
             if (!data.resultCode) {
-                dispatch(addTasksArrayAC(data.data.item.id))
+                dispatch(addTasksArray(data.data.item.id))
                 dispatch(addTDList(data.data.item))
                 dispatch(setStatus('success'))
             } else apiErrorHandler(data, dispatch)
@@ -73,7 +73,7 @@ export const removeTDL = (toDoListId: string): any => {
         API.deleteTDL(toDoListId).then(data => {
             if (!data.resultCode) {
                 dispatch(removeTDList(toDoListId))
-                dispatch(removeTasksArrayAC(toDoListId))
+                dispatch(removeTasksArray(toDoListId))
                 dispatch(setStatus('success'))
             } else apiErrorHandler(data, dispatch)
         }).catch(error => networkErrorHandler(error, dispatch))

@@ -1,8 +1,8 @@
 import {v1} from 'uuid';
 import {TaskPriority, TaskStatus} from '../api/api';
 import {
-    addTaskAC, addTasksArrayAC, changeTaskAC,
-    removeTaskAC, removeTasksArrayAC, SetTasks, TasksListType, tasksReducer
+    addTask, addTasksArray, changeTask,
+    removeTask, removeTasksArray, setTasks, TasksListType, tasksReducer
 } from './tasks-reducer';
 
 const [tdlId1, tdlId2] = [v1(), v1()]
@@ -87,8 +87,8 @@ const startState: TasksListType = {
 
 test('remove task', () => {
     const endState = tasksReducer(
-        tasksReducer(startState, removeTaskAC(tdlId1, startState[tdlId1][0].id)),
-        removeTaskAC(tdlId2, startState[tdlId2][1].id)
+        tasksReducer(startState, removeTask({toDoListId: tdlId1, taskId: startState[tdlId1][0].id})),
+        removeTask({toDoListId: tdlId2, taskId: startState[tdlId2][1].id})
     )
 
     expect(endState[tdlId2].length).toBe(startState[tdlId2].length - 1)
@@ -98,7 +98,7 @@ test('remove task', () => {
 })
 
 test('add task', () => {
-    const endState = tasksReducer(startState, addTaskAC(
+    const endState = tasksReducer(startState, addTask(
         {
             id: v1(),
             title: 'NewTask',
@@ -120,7 +120,7 @@ test('add task', () => {
 })
 
 test('change task title', () => {
-    const endState = tasksReducer(startState, changeTaskAC(
+    const endState = tasksReducer(startState, changeTask(
         {
             id: startState[tdlId1][0].id,
             title: 'NewTitle',
@@ -144,7 +144,7 @@ test('change task title', () => {
 
 test('change task status', () => {
     const endState = tasksReducer(
-        tasksReducer(startState, changeTaskAC(
+        tasksReducer(startState, changeTask(
             {
                 id: startState[tdlId2][1].id,
                 title: "Молоко",
@@ -158,7 +158,7 @@ test('change task status', () => {
                 description: ''
             }
         )),
-        changeTaskAC(
+        changeTask(
             {
                 id: startState[tdlId1][2].id,
                 title: "React",
@@ -185,7 +185,7 @@ test('change task status', () => {
 })
 
 test('add empty array of tasks for new ToDoList', () => {
-    const endState = tasksReducer(startState, addTasksArrayAC(v1()))
+    const endState = tasksReducer(startState, addTasksArray(v1()))
 
     expect(Object.keys(endState).length).toBe(Object.keys(startState).length + 1)
     expect(Object.values(endState).length).toBe(Object.values(startState).length + 1)
@@ -198,14 +198,14 @@ test('add empty array of tasks for new ToDoList', () => {
 })
 
 test('delete array of tasks for removed ToDoList', () => {
-    const endState = tasksReducer(startState, removeTasksArrayAC(tdlId1))
+    const endState = tasksReducer(startState, removeTasksArray(tdlId1))
 
     expect(Object.keys(endState).length).toBe(Object.keys(startState).length - 1)
     expect(endState[tdlId1]).toBeUndefined()
 })
 
 test('set tasks to the state', () => {
-    const action = SetTasks(tdlId1, [
+    const action = setTasks({toDoListId: tdlId1, tasks: [
         {
             id: v1(),
             title: "Vue",
@@ -230,7 +230,7 @@ test('set tasks to the state', () => {
             priority: TaskPriority.Middle,
             description: ''
         },
-    ])
+    ]})
     const endState = tasksReducer({}, action)
 
     expect(Object.keys(endState).length).toBe(1)
