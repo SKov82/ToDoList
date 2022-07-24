@@ -1,6 +1,6 @@
 import {v1} from 'uuid';
 import {
-    addTDListAC, changeFilterAC, changeTDLTitleAC, removeTDListAC, SetTDL, TDLType, todolistReducer
+    addTDList, changeTDListFilter, changeTDListTitle, removeTDList, setTDList, TDLType, todolistReducer
 } from './todolist-reducer';
 
 const startState: TDLType[] = [
@@ -10,14 +10,14 @@ const startState: TDLType[] = [
 ]
 
 test('remove todolist', () => {
-    const endState = todolistReducer(startState, removeTDListAC(startState[0].id))
+    const endState = todolistReducer(startState, removeTDList(startState[0].id))
 
     expect(endState.length).toBe(startState.length - 1)
     expect(endState[0].id).toBe(startState[1].id)
 })
 
 test('add todolist', () => {
-    const endState = todolistReducer(startState, addTDListAC(
+    const endState = todolistReducer(startState, addTDList(
         {id: v1(), title: 'NewTodoList', addedDate: '', order: 0}
     ))
 
@@ -28,7 +28,9 @@ test('add todolist', () => {
 })
 
 test('change todolist title', () => {
-    const endState = todolistReducer(startState, changeTDLTitleAC(startState[1].id, 'NewTodoList'))
+    const endState = todolistReducer(startState, changeTDListTitle(
+        {toDoListId: startState[1].id, title: 'NewTodoList'}
+    ))
 
     expect(endState[1].id).toBe(startState[1].id)
     expect(endState[1].filter).toBe(startState[1].filter)
@@ -37,7 +39,9 @@ test('change todolist title', () => {
 })
 
 test('change todolist filter', () => {
-    const endState = todolistReducer(startState, changeFilterAC(startState[1].id, 'all'))
+    const endState = todolistReducer(startState, changeTDListFilter(
+        {toDoListId: startState[1].id, filter: 'all'}
+    ))
 
     expect(endState[1].id).toBe(startState[1].id)
     expect(endState[1].filter).toBe('all')
@@ -46,7 +50,7 @@ test('change todolist filter', () => {
 })
 
 test('set todolists to the state', () => {
-    const action = SetTDL([
+    const action = setTDList([
         {id: v1(), title: 'TDL from server', addedDate: '', order: 0},
     ])
     const endState = todolistReducer(startState, action)

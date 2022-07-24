@@ -3,39 +3,42 @@ import {Dispatch} from 'redux';
 import {addTasksArrayAC, removeTasksArrayAC, SetTasks} from './tasks-reducer';
 import {setStatus} from './app-reducer';
 import {apiErrorHandler, networkErrorHandler} from '../utils/error-utils';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export type FilterType = 'all' | 'active' | 'done'
 export type TDLType = TodoListType & {
     filter: FilterType
 }
 export const tdlInitialState: Array<TDLType> = []
-export const todolistReducer = (state: Array<TDLType> = tdlInitialState, action: ActionType): TDLType[] => {
-    switch (action.type) {
-        case 'REMOVE-TODOLIST':
-            return state.filter(tl => tl.id !== action.toDoListId)
-        case 'ADD-TODOLIST':
-            return [{...action.toDoList, filter: 'all'}, ...state]
-        case 'CHANGE-TDL-TITLE':
-            return state.map(tl => tl.id === action.toDoListId ? {...tl, title: action.title} : tl)
-        case 'CHANGE-FILTER':
-            return state.map(tl => tl.id === action.toDoListId ? {...tl, filter: action.filter} : tl)
-        case 'SET-TODOLISTS':
-            return action.toDoLists.map(tdl => ( {...tdl, filter: 'all'} ))
-        default:
-            return state
-    }
-}
-type ActionType = ReturnType<typeof removeTDListAC>
-    | ReturnType<typeof addTDListAC>
-    | ReturnType<typeof changeTDLTitleAC>
-    | ReturnType<typeof changeFilterAC>
-    | ReturnType<typeof SetTDL>
-
-export const removeTDListAC = (toDoListId: string) => ({type: 'REMOVE-TODOLIST', toDoListId} as const)
-export const addTDListAC = (toDoList: TodoListType) => ({type: 'ADD-TODOLIST', toDoList} as const)
-export const changeTDLTitleAC = (toDoListId: string, title: string) => ({type: 'CHANGE-TDL-TITLE', toDoListId, title} as const)
-export const changeFilterAC = (toDoListId: string, filter: FilterType) => ({type: 'CHANGE-FILTER', toDoListId, filter} as const)
-export const SetTDL = (toDoLists: Array<TodoListType>) => ({type: 'SET-TODOLISTS', toDoLists} as const)
+const slice = createSlice({
+    name: 'todolist',
+    initialState: tdlInitialState,
+    reducers: {
+        removeTDList(state, action: PayloadAction<string>) {
+            return state.filter(tdl => tdl.id !== action.payload)
+            // const index = state.findIndex(tdl => tdl.id === action.payload)
+            // if (index !== -1) state.splice(index, 1)
+        },
+        addTDList(state, action: PayloadAction<TodoListType>) {
+            state.unshift({...action.payload, filter: 'all'})
+        },
+        changeTDListTitle(state, action: PayloadAction<{toDoListId: string, title: string}>) {
+            const index = state.findIndex(tdl => tdl.id === action.payload.toDoListId)
+            state[index].title = action.payload.title
+            // return state.map(tdl => tdl.id === action.payload.toDoListId ? {...tdl, title: action.payload.title} : tdl)
+        },
+        changeTDListFilter(state, action: PayloadAction<{toDoListId: string, filter: FilterType}>) {
+            const index = state.findIndex(tdl => tdl.id === action.payload.toDoListId)
+            state[index].filter = action.payload.filter
+            // return state.map(tdl => tdl.id === action.payload.toDoListId ? {...tdl, filter: action.payload.filter} : tdl)
+        },
+        setTDList(state, action: PayloadAction<TodoListType[]>) {
+            return action.payload.map(tdl => ({...tdl, filter: 'all'}))
+        },
+    },
+})
+export const todolistReducer = slice.reducer
+export const {removeTDList, addTDList, changeTDListTitle, changeTDListFilter, setTDList} = slice.actions
 
 export const fetchTDL = (): any => {
     return (dispatch: Dispatch) => {
@@ -47,7 +50,7 @@ export const fetchTDL = (): any => {
                     .then(data => dispatch(SetTasks(tdl.id, data.items)))
                     .catch(error => networkErrorHandler(error, dispatch))
             })
-            dispatch(SetTDL(data))
+            dispatch(setTDList(data))
             dispatch(setStatus('success'))
         }).catch(error => networkErrorHandler(error, dispatch))
     }
@@ -58,7 +61,7 @@ export const addTDL = (title: string): any => {
         API.createTDL(title).then(data => {
             if (!data.resultCode) {
                 dispatch(addTasksArrayAC(data.data.item.id))
-                dispatch(addTDListAC(data.data.item))
+                dispatch(addTDList(data.data.item))
                 dispatch(setStatus('success'))
             } else apiErrorHandler(data, dispatch)
         }).catch(error => networkErrorHandler(error, dispatch))
@@ -69,7 +72,7 @@ export const removeTDL = (toDoListId: string): any => {
         dispatch(setStatus('loading'))
         API.deleteTDL(toDoListId).then(data => {
             if (!data.resultCode) {
-                dispatch(removeTDListAC(toDoListId))
+                dispatch(removeTDList(toDoListId))
                 dispatch(removeTasksArrayAC(toDoListId))
                 dispatch(setStatus('success'))
             } else apiErrorHandler(data, dispatch)
@@ -81,7 +84,7 @@ export const changeTDLTitle = (toDoListId: string, title: string): any => {
         dispatch(setStatus('loading'))
         API.updateTDL(toDoListId, title).then(data => {
             if (!data.resultCode) {
-                dispatch(changeTDLTitleAC(toDoListId, title))
+                dispatch(changeTDListTitle({toDoListId, title}))
                 dispatch(setStatus('success'))
             } else apiErrorHandler(data, dispatch)
         }).catch(error => networkErrorHandler(error, dispatch))

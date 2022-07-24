@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from '../state/store';
 import {
-    addTDL, changeFilterAC, changeTDLTitle, fetchTDL, FilterType, removeTDL, TDLType
+    addTDL, changeTDListFilter, changeTDLTitle, fetchTDL, FilterType, removeTDL, TDLType
 } from '../state/todolist-reducer';
 import {addTaskTC, changeTaskTC, removeTaskTC, TasksListType} from '../state/tasks-reducer';
 import {TaskStatus} from '../api/api';
@@ -42,7 +42,7 @@ export const TDL = React.memo(() => {
         dispatch(changeTDLTitle(toDoListId, newTitle))
     }, [dispatch])
     const changeFilter = useCallback((toDoListId: string, filter: FilterType) => {
-        dispatch(changeFilterAC(toDoListId, filter))
+        dispatch(changeTDListFilter({toDoListId, filter}))
     }, [dispatch])
 
     return <>
