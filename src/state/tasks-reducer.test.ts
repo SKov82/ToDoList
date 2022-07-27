@@ -185,16 +185,15 @@ test('change task status', () => {
 })
 
 test('add empty array of tasks for new ToDoList', () => {
-    const endState = tasksReducer(startState, addTasksArray(v1()))
+    const key = v1()
+    const endState = tasksReducer(startState, addTasksArray(key))
 
     expect(Object.keys(endState).length).toBe(Object.keys(startState).length + 1)
     expect(Object.values(endState).length).toBe(Object.values(startState).length + 1)
     expect(endState[tdlId1].length).toBe(startState[tdlId1].length)
     expect(endState[tdlId2].length).toBe(startState[tdlId2].length)
-    expect(endState[Object.keys(endState)[0]].length).toBe(0)
-    expect(endState[Object.keys(endState)[0]]).toEqual([])
-    expect(endState[Object.keys(endState)[1]].length).toBe(startState[tdlId1].length)
-    expect(Object.keys(endState)[2]).toBe(tdlId2)
+    expect(endState[key].length).toBe(0)
+    expect(endState[key]).toEqual([])
 })
 
 test('delete array of tasks for removed ToDoList', () => {
